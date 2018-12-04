@@ -1,0 +1,263 @@
+body{
+    max-height: 100%;
+    width: 100%;
+    /* overflow: hidden; */
+    background: rgb(227, 255, 234);
+    font-size: 1.5vw;
+}
+label{
+    
+}
+.btn{
+    font-size: .75vw !important;
+}
+#whatIsLivelinessDiv{
+    background-image: url("unicorn-tails-1.jpeg");
+    background-color: rgba(255,255,255,0.8);
+    background-blend-mode: lighten;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 90vh;
+    font-weight: 600;
+    font-size: 1vw;
+
+    /* You may add things like width, height, background-size... */
+}
+#whatIsLivelinessDiv{
+    margin-top:0px;
+     
+}
+.textIndent{
+    text-indent: 5px;
+    margin-bottom: 5px;
+    padding:10px 10px 10px 10px
+}
+.section{
+
+    background-image: linear-gradient(to right, rgb(87, 87, 87) , rgb(230, 230, 230));
+    color:white;
+    text-indent:10px;
+    padding-top:5px;
+    padding-bottom: 10px;
+    width:100%;
+    font-size: 1.6vw;
+}
+.section2{
+ 
+}
+#canvasContainer{
+    background-image: linear-gradient(to right, #e20505 , #ffffff);
+}
+#rightSide{
+    background-image: linear-gradient(to right, #e3f777 , #efefef);
+}
+#addButton{
+    line-height: 1;
+    width:3.5vw;
+
+}
+#instructions {
+    grid-column: 60/75;
+    grid-row: 11/75;
+    overflow-y: scroll;
+    background: linear-gradient(to bottom, #ffffff , #dca6a6);
+}
+#instructionsBackground {
+    /* grid-column: 66/97;
+    grid-row: 15/75;
+    height: 60vh;
+    overflow-y: scroll; */
+    /*background: linear-gradient(to bottom, #ffffff , #eca6a6);
+    border: 3px solid gray;
+    border-radius: 5px;
+    border-top-color: #ffffff;*/
+}
+#myCanvas{
+    background-color: rgb(219, 225, 255);
+}
+#canvasDiv {
+    grid-column: 26/46;
+    grid-row: 14/76;
+    /* background-color: rgb(246, 218, 90); */
+    /* margin-top: 4px;
+    transition-property: grid-row;
+    transition-duration: 2s;
+    transition-timing-function: linear;
+    transition-delay: 1s; */
+    /* border: 3px solid gray;
+    border-radius:5px; */
+}
+div.rotateYAxis {
+    width:20%;
+    height: 20%;
+    position: absolute;
+    background-color: yellow;
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -webkit-transform: rotate(270deg); /* Safari 3-8 */
+    transform: rotate(270deg);
+}
+.radio-inline{
+    margin-right:10px;
+}
+.rel{
+position: relative;
+}
+#headerBackground {
+    /*background: linear-gradient(to left, rgba(245,245,245,1), rgb(123, 123, 123) 10%, rgb(123, 123, 123) 90%, rgba(245,245,245,1));*/
+    background:url(yarn3.png) ;
+    background-clip: border-box;
+    max-width:100%;
+    max-height:100%;
+    font-size: 4vw;
+}
+#clipped-title1 {
+	/*background: url(yarn2.jpg) no-repeat center center;*/
+	background-size: cover;
+	color: black;
+	-webkit-text-fill-color: white;
+    -webkit-background-clip: text;
+    font-size: 3vw;
+}
+.image-left{
+    margin:20px 30px 30px 0px;
+}
+.image-right {
+    margin:20px 20px  0px 20px;
+}
+#clipped-title1 h1 {
+	font-size: 3vw;
+	font-family: 'Exo', sans-serif;
+    text-align: center;
+    font-weight: 900;
+    font-style:italic;
+	/*-webkit-transition: text-shadow 1s ease;
+	text-shadow: 0 0 1px rgba(0,0,0,.1);*/
+	margin: 0;
+	padding: 0;
+}
+h1 {
+    -webkit-text-stroke: 1px rgb(0, 0, 0);
+    /*font-weight: 900;*/
+  }
+  #xxx,#yyy{
+      font-size: 40px;
+    font-family: "Exo script=all rev=1", "Adobe Blank";
+    font-weight: 900;
+    font-style: italic; 
+  }
+#inputForm {
+    
+}
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 24px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggleLabel{
+  display:inline-block;
+  vertical-align:text-top;
+  color:gray;
+  font-weight: bold;
+  }
+  .toggleLabel.on{
+  color:#28A745;
+  }
+   
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  [data-tip] {
+	position:relative;
+
+}
+[data-tip]:before {
+	content:'';
+	/* hides the tooltip when not hovered */
+	display:none;
+    content:'';
+    /* border: 1px solid black; */
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid #1a1a1a;	 
+	position:absolute;
+	top:30px;
+	left:35px;
+	z-index:8;
+	font-size:0;
+	line-height:0;
+	width:0;
+	height:0;
+}
+[data-tip]:after {
+	display:none;
+	content:attr(data-tip);
+	position:absolute;
+	top:35px;
+	left:0px;
+	padding:5px 8px 25px 5px;
+	background:#e1e456;
+	color:rgb(0, 0, 0);
+	z-index:9;
+	font-size: 0.75em;
+	height:18px;
+	line-height:18px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	white-space:nowrap;
+	word-wrap:normal;
+}
+[data-tip]:hover:before,
+[data-tip]:hover:after {
+	display:block;
+}
