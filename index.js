@@ -24,8 +24,6 @@ function clearCanvas() {
     let rotateWidth = (-.45 * yaxis.offsetWidth) + canvas.offsetLeft 
     yaxis.style.left = rotateWidth + "px";
 
-    document.getElementById("instructions").style.width = spaceForInstructions + "vw";
-    document.getElementById("instructions").style.height = "64vh";
     let ctx = DrawResiliancyLine();
     if (plotHookSet === false) {
         //var elementsArray = document.querySelectorAll('.livelyInput');

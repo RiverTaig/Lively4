@@ -26,7 +26,8 @@
 
         .wrapper {
             display: grid;
-            grid-template-columns: repeat(100, 1fr);
+            /* grid-template-columns: repeat(100, 1fr); */
+            grid-auto-columns: 1%;
             grid-gap: 0em;
             grid-auto-rows: 1%;
             height: 99vh;
@@ -34,7 +35,6 @@
         .header {
             grid-column: 1/101;
             grid-row: 1/10;
-
         }
         #whatIsLiveliness {
             grid-column: 3/25;
@@ -55,13 +55,16 @@
         #loadData {
             grid-column: 26/30;
             grid-row: 72/76;
-            z-index: 9999;
+             z-index: 99;
         }
 
         #addButton {
-            grid-column: 27/31;
-            grid-row: 78/81;
-            z-index: 9999;
+            background-color: rgb(237, 243, 245); /* rgb(237, 243, 245);*/
+            grid-column: 26/31;
+            grid-row: 77/103;
+             z-index: 99; 
+            background-image: linear-gradient(to bottom, rgb(237, 243, 245) ,   rgb(219, 225, 255));
+            
         }
 
         /* #inputForm {
@@ -109,8 +112,8 @@
 </head>
 
 <body style="position: relative;">
-        <p style="position:absolute;" id="yAxis" class="legend rotate">Elasticity >>></p>
-        <p style="position:absolute;" id="xAxis" class="legend">Resiliency >>></p>
+    <p style="position:absolute;" id="yAxis" class="legend rotate">Elasticity >>></p>
+    <p style="position:absolute;" id="xAxis" class="legend">Resiliency >>></p>
     <div class="wrapper">
         <div class="header">
             <div id="headerBackground">
@@ -123,23 +126,23 @@
         <div id="whatIsLiveliness">
             <div id="whatIsLivelinessBackground" style="height:90%;">
                 <div id="whatIsLivelinessDiv">
-                    <h3 class="section" style="margin-top:0px;">What is Liveliness ?</h3>
-                    <div class="textIndent" style="">
+                    <h3 class="section" >What is Liveliness ?</h3>
+                    <div class="textIndent"  >
                         Liveliness provides fiber
                         artists like yourselves
-                        
-                                a quick and easy way to get a feel for the relationship between the elasticity and resiliancy
-                                of a fiber, a yarn, or a knitted garmet.<p>orem iptate velit esse cillum dolore eu fugiat nulla
-                                    pariatur. Excepteur sint occaecat cupidatat non proident</p>
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
-                                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident</p>
-                                <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
-                                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                    Excepteur sint occaecat cupidatat non proident</p>
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
-                                    More...</button>
-                         
+
+                        a quick and easy way to get a feel for the relationship between the elasticity and resiliancy
+                        of a fiber, a yarn, or a knitted garmet.<p>orem iptate velit esse cillum dolore eu fugiat nulla
+                            pariatur. Excepteur sint occaecat cupidatat non proident</p>
+                        <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecat cupidatat non proident</p>
+                        <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
+                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur sint occaecat cupidatat non proident</p>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
+                            More...</button>
+
 
 
 
@@ -217,126 +220,133 @@
         <div id="canvasDiv">
             <canvas id="myCanvas">
             </canvas>
-            <div id="instructions" style="position: absolute;top:0px;right:0px;background-color:#cccccccc;width:100%;height:100px;margin-top:10vh;margin-right: 3vw;">
-                <div id="instructionsDiv">
-                        <h3 class="section" style="margin-top:0px;">Instructions</h3>
-                        <div id="output">
+            <!--position: absolute;top:0px;right:0px;background-color:#cccccccc;width:100%;height:100px;margin-top:10vh;margin-right: 3vw;-->
 
-                        </div>
-                        <div>
-                                <ol>
-                                        <li>Lay a 24” piece of test yarn over a ruler or yardstick.</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. <img height="200px" width="250px" class="image-left" align="left" src="data:image/jpeg;base64,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">
-                                            <!-- <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption> -->
-                                        </li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. </li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers.<img height="200px" width="250px" class="image-right" align="right" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLVUUwlCFnSygS8ZO4c2yxAV3Bltwi0TsJbyiwmv4akCxSV38I"></li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. <img class="image-left" height="200px" width="250px" align="left" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUjwcjYjAGfEMLA81-g8PR0peKpX9OS49EcKUrWmhpy9KGQ46eWA">]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                                            distort
-                                            or
-                                            extend
-                                            the fibers. [IMAGE]</li>
-                                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area
-                                            is
-                                            10”
-                                            in
-                                            length.
-                                            Image</li>
-                                        <li>Stretch the length of yarn as far as it will stretch, but no further. This is
-                                            the
-                                            elasticity or
-                                            elastic
-                                            length of the yarn. Percentage of the original length (10”).
-                                            This is the yield strength point of the stress/strain curve.
-                                            image</li>
-                                        <li>Take note of the length.</li>
-                                        <li>Hold the yarn for 1 min.</li>
-                                        <li>WITHOUT letting go of the yarn, move your hands together allowing the yarn to
-                                            relax.
-                                            image</li>
-                                        <li>Allow the yarn to relax for 1 min.</li>
-                                        <li>Stretch the yarn as in Step 2. The yarn should be straight, but relaxed. This
-                                            is
-                                            the
-                                            resiliency
-                                            or
-                                            resilient length of the yarn. Percentage of the elastic length recovered.
-                                            image</li>
-                                        <li>Take note of the length.</li>
-                                        <li>Enter the elasticity and resiliency above.END</li>
-                                    </ol>
-                        </div>
-                </div>
+        </div>
+        <div id="instructions"  >
+            <div id="instructionsDiv">
+                <h3 class="section" >Instructions</h3>
+
             </div>
         </div>
-        <div id="addButton"><button type="submit"  class="btn btn-primary">ADD</button></div>
+        <div id="instructionsContentContainer"> 
+            <div id="instructionsContent">
+                <div id="output">
+            
+                </div>
+                <div>
+                    <ol>
+                        <li>Lay a 24” piece of test yarn over a ruler or yardstick.</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. <img height="200px" width="250px" class="image-left" align="left" src="data:image/jpeg;base64,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">
+                            <!-- <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption> -->
+                        </li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. </li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers.<img height="200px" width="250px" class="image-right" align="right" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLVUUwlCFnSygS8ZO4c2yxAV3Bltwi0TsJbyiwmv4akCxSV38I"></li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. <img class="image-left" height="200px" width="250px" align="left" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUjwcjYjAGfEMLA81-g8PR0peKpX9OS49EcKUrWmhpy9KGQ46eWA">]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
+                            distort
+                            or
+                            extend
+                            the fibers. [IMAGE]</li>
+                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area
+                            is
+                            10”
+                            in
+                            length.
+                            Image</li>
+                        <li>Stretch the length of yarn as far as it will stretch, but no further. This is
+                            the
+                            elasticity or
+                            elastic
+                            length of the yarn. Percentage of the original length (10”).
+                            This is the yield strength point of the stress/strain curve.
+                            image</li>
+                        <li>Take note of the length.</li>
+                        <li>Hold the yarn for 1 min.</li>
+                        <li>WITHOUT letting go of the yarn, move your hands together allowing the yarn to
+                            relax.
+                            image</li>
+                        <li>Allow the yarn to relax for 1 min.</li>
+                        <li>Stretch the yarn as in Step 2. The yarn should be straight, but relaxed. This
+                            is
+                            the
+                            resiliency
+                            or
+                            resilient length of the yarn. Percentage of the elastic length recovered.
+                            image</li>
+                        <li>Take note of the length.</li>
+                        <li>Enter the elasticity and resiliency above.END</li>
+                    </ol>
+                </div>
+            </div>
+        </div>   
+        <div id="addButton"><button type="submit" class="btn btn-primary">ADD</button></div>
 
         <!-- <div id="inputForm">
             <div id="innerGrid">
@@ -476,7 +486,7 @@
         };  
     </script>
 </body>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

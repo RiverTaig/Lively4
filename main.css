@@ -28,19 +28,23 @@ label{
      
 }
 .textIndent{
-    text-indent: 5px;
+
     margin-bottom: 5px;
-    padding:10px 10px 10px 10px
+    padding:10px  10px 10px 10px
 }
 .section{
 
-    background-image: linear-gradient(to right, rgb(87, 87, 87) , rgb(230, 230, 230));
+    background-image: linear-gradient(to right, rgb(87, 87, 87) , rgb(123, 123, 123) 50%, rgb(230, 230, 230));
     color:white;
     text-indent:10px;
     padding-top:5px;
     padding-bottom: 10px;
-    width:100%;
+    padding-right:.5vw;
+    width: calc(100% + .3vw);
     font-size: 1.6vw;
+    border: transparent;
+    border-radius:7px;
+    margin-left: -.3vw;
 }
 .section2{
  
@@ -57,21 +61,24 @@ label{
 
 }
 #instructions {
-    grid-column: 60/75;
-    grid-row: 11/75;
+    grid-column: 57/97;
+    grid-row: 11/15;
+    z-index: 999;
+
+}
+#instructionsContentContainer{
+    grid-column: 57/97;
+    grid-row: 15/76;
+    height: calc(0px + 60vh);
     overflow-y: scroll;
+}
+#instructionsContent {
+    /* grid-column: 57/97;
+    grid-row: 15/76; */
     background: linear-gradient(to bottom, #ffffff , #dca6a6);
+    padding: 20px 10px 10px 0px;
 }
-#instructionsBackground {
-    /* grid-column: 66/97;
-    grid-row: 15/75;
-    height: 60vh;
-    overflow-y: scroll; */
-    /*background: linear-gradient(to bottom, #ffffff , #eca6a6);
-    border: 3px solid gray;
-    border-radius: 5px;
-    border-top-color: #ffffff;*/
-}
+
 #myCanvas{
     background-color: rgb(219, 225, 255);
 }
@@ -105,18 +112,21 @@ position: relative;
 #headerBackground {
     /*background: linear-gradient(to left, rgba(245,245,245,1), rgb(123, 123, 123) 10%, rgb(123, 123, 123) 90%, rgba(245,245,245,1));*/
     background:url(yarn3.png) ;
-    background-clip: border-box;
-    max-width:100%;
-    max-height:100%;
-    font-size: 4vw;
+    height: 100%;
+    width: 100%;
+    /* background-clip: border-box; */
+    /* max-width:100%;
+    max-height:100%; */
+    /* font-size: 4vw; */
 }
 #clipped-title1 {
 	/*background: url(yarn2.jpg) no-repeat center center;*/
 	background-size: cover;
-	color: black;
+    color: black;
+    /* padding: 10px 0px; */
 	-webkit-text-fill-color: white;
     -webkit-background-clip: text;
-    font-size: 3vw;
+    /* font-size: 3vw; */
 }
 .image-left{
     margin:20px 30px 30px 0px;
@@ -125,18 +135,20 @@ position: relative;
     margin:20px 20px  0px 20px;
 }
 #clipped-title1 h1 {
-	font-size: 3vw;
+	font-size: calc(16px + 2vw);
 	font-family: 'Exo', sans-serif;
     text-align: center;
-    font-weight: 900;
+    font-weight: 200;
     font-style:italic;
-	/*-webkit-transition: text-shadow 1s ease;
-	text-shadow: 0 0 1px rgba(0,0,0,.1);*/
-	margin: 0;
-	padding: 0;
+	-webkit-transition: text-shadow 1s ease;
+	text-shadow: 0 0 1px rgba(0,0,0,.1);
+	margin: 0px;
+    padding: 0;
+    line-height: 10vh;
 }
 h1 {
     -webkit-text-stroke: 1px rgb(0, 0, 0);
+
     /*font-weight: 900;*/
   }
   #xxx,#yyy{
@@ -212,7 +224,10 @@ h1 {
   .slider.round {
     border-radius: 34px;
   }
-  
+  .modal-backdrop {
+    /* bug fix - no overlay */    
+    /* display: none;     */
+}
   .slider.round:before {
     border-radius: 50%;
   }
