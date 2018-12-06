@@ -9,18 +9,18 @@ label{
     
 }
 .btn{
-    font-size: .75vw !important;
+    font-size: calc(10px  + .5vw) !important;
 }
 #whatIsLivelinessDiv{
-    background-image: url("unicorn-tails-1.jpeg");
-    background-color: rgba(255,255,255,0.8);
-    background-blend-mode: lighten;
+    background-image:   url("unicorn-tails-1.jpeg");
+    background-color: rgba(255,255,255,0.7);
+    background-blend-mode: overlay;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 90vh;
+    height: auto;
     font-weight: 600;
-    font-size: 1vw;
-
+    font-size: calc(10px + .5vw);
+    /* overflow-y: scroll; */
     /* You may add things like width, height, background-size... */
 }
 #whatIsLivelinessDiv{
@@ -41,7 +41,7 @@ label{
     padding-bottom: 10px;
     padding-right:.5vw;
     width: calc(100% + .3vw);
-    font-size: 1.6vw;
+    font-size: calc(10px + 1vw);
     border: transparent;
     border-radius:7px;
     margin-left: -.3vw;
@@ -60,16 +60,77 @@ label{
     width:3.5vw;
 
 }
+.header {
+    grid-column: 1/101;
+    grid-row: 1/10;
+}
+#whatIsLiveliness {
+    grid-column: 3/25;
+    grid-row: 11/101;
+    
+}
+th:first-child {
+    visibility: hidden;
+}
+span > a {
+    color:rgb(231, 83, 83);
+    font-size: calc(12px + .2vw);
+    margin:0px 20px;
+    visibility: hidden;
+}
+#relativeAbsolute {
+    grid-column: 26/40;
+    grid-row: 11/14;
+}
+
+#showHide {
+    grid-column: 45/65;
+    grid-row: 11/14;
+}
+
+#loadData {
+    grid-column: 26/30;
+    grid-row: 71/75;
+    z-index: 99;
+    width:  3vw;
+}
+
+#addButton {
+    background-color: rgb(237, 243, 245); /* rgb(237, 243, 245);*/
+    grid-column: 26/31;
+    grid-row: 77/103;
+     z-index: 99; 
+    background-image: linear-gradient(to bottom, rgb(237, 243, 245) ,   rgb(219, 225, 255));
+    width:  3vw;
+}
+
+ #innerGrid{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: .6em;
+    grid-auto-rows: 1fr;
+    /* grid-gap:.5em; */
+} 
+
+#dataTable {
+    grid-column: 26/97;
+    grid-row: 77/101;
+    border:1px solid gray;
+    border-bottom: 0px solid transparent;
+    border-radius: 10px;
+    border-bottom-left-radius: 0px;
+}
 #instructions {
-    grid-column: 57/97;
+    grid-column: 57/100;
     grid-row: 11/15;
     z-index: 999;
 
 }
+ 
 #instructionsContentContainer{
-    grid-column: 57/97;
-    grid-row: 15/76;
-    height: calc(0px + 60vh);
+    grid-column: 57/100;
+    grid-row: 15/70;
+    height: calc(0px + 60vh); 
     overflow-y: scroll;
 }
 #instructionsContent {
@@ -85,14 +146,6 @@ label{
 #canvasDiv {
     grid-column: 26/46;
     grid-row: 14/76;
-    /* background-color: rgb(246, 218, 90); */
-    /* margin-top: 4px;
-    transition-property: grid-row;
-    transition-duration: 2s;
-    transition-timing-function: linear;
-    transition-delay: 1s; */
-    /* border: 3px solid gray;
-    border-radius:5px; */
 }
 div.rotateYAxis {
     width:20%;
@@ -177,6 +230,7 @@ h1 {
   vertical-align:text-top;
   color:gray;
   font-weight: bold;
+  font-size: calc(10px + .15vw);
   }
   .toggleLabel.on{
   color:#28A745;

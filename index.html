@@ -32,63 +32,7 @@
             grid-auto-rows: 1%;
             height: 99vh;
         }
-        .header {
-            grid-column: 1/101;
-            grid-row: 1/10;
-        }
-        #whatIsLiveliness {
-            grid-column: 3/25;
-            grid-row: 11/101;
-            
-        }
 
-        #relativeAbsolute {
-            grid-column: 26/40;
-            grid-row: 11/14;
-        }
-
-        #showHide {
-            grid-column: 40/65;
-            grid-row: 11/14;
-        }
-
-        #loadData {
-            grid-column: 26/30;
-            grid-row: 72/76;
-             z-index: 99;
-        }
-
-        #addButton {
-            background-color: rgb(237, 243, 245); /* rgb(237, 243, 245);*/
-            grid-column: 26/31;
-            grid-row: 77/103;
-             z-index: 99; 
-            background-image: linear-gradient(to bottom, rgb(237, 243, 245) ,   rgb(219, 225, 255));
-            
-        }
-
-        /* #inputForm {
-            grid-column: 27/99;
-            grid-row: 72/77;
-            background-clip: border-box;
-            
-        }  */
-         #innerGrid{
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-gap: .6em;
-            grid-auto-rows: 1fr;
-            /* grid-gap:.5em; */
-        } 
-
-        #dataTable {
-            grid-column: 26/97;
-            grid-row: 77/101;
-            border:1px solid gray;
-            border-bottom: 0px solid transparent;
-            border-radius: 10px;
-            border-bottom-left-radius: 0px;
-        }
 
         .rotate {
 
@@ -111,7 +55,7 @@
 
 </head>
 
-<body style="position: relative;">
+<body style="position: relative;" onresize="onResize()">
     <p style="position:absolute;" id="yAxis" class="legend rotate">Elasticity >>></p>
     <p style="position:absolute;" id="xAxis" class="legend">Resiliency >>></p>
     <div class="wrapper">
@@ -137,9 +81,7 @@
                         <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
                             dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                             Excepteur sint occaecat cupidatat non proident</p>
-                        <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur sint occaecat cupidatat non proident</p>
+
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
                             More...</button>
 
@@ -225,7 +167,7 @@
         </div>
         <div id="instructions"  >
             <div id="instructionsDiv">
-                <h3 class="section" >Instructions</h3>
+                <h3 class="section" ><span>Instructions <a class="hiddenAnchor" href="www.cnn.com">View Plot</a> <a class="hiddenAnchor"  href="www.cnn.com">Learn More</a></span></h3>
 
             </div>
         </div>

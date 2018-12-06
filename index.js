@@ -1,93 +1,136 @@
 let prevX = -1;
 let prevY = -1;
 let plotHookSet = false;
-function clearCanvas() {
-    //the canvas starts at column 26
+function clearCanvas(){
+    onResize();
+}
+function onResize() {
+    //The canvas (which is always square) starts at either column 3 or 26 depending on if "What is Liveliness"
+    // is visible the canvas disappears if the height exceeds the width (i.e "portrait"), and "Instructions"
+    //is then slid over
     let canvas = document.getElementById('myCanvas');
-    let w = document.getElementById('canvasDiv').offsetWidth;
-    let h = document.getElementById('canvasDiv').offsetHeight;
-    canvas.height = h;
-    canvas.width = canvas.height;
-    let originalCanvasDivWidth = document.getElementById('canvasDiv').width  ;
+    let canvasDiv = document.getElementById('canvasDiv');
+    let relAbs = document.getElementById('relativeAbsolute');
+    let showHide = document.getElementById('showHide');
+    let xaxis = document.getElementById('xAxis');
+    let yaxis = document.getElementById('yAxis');
+    let loadData = document.getElementById('loadData');
+    let dataTable = document.getElementById('dataTable');
+    let addButton = document.getElementById('addButton');
+    let whatIsLiveliness = document.getElementById('whatIsLiveliness');
+    let w = canvasDiv.offsetWidth;
+    let h = canvasDiv.offsetHeight;
+    let whatIsVisible = true
+   
+    if(window.innerWidth < 900){ //NARROW WIDTH MODE
+        whatIsLiveliness.style.visibility = 'hidden';
+        whatIsVisible = false
+    }
+    else{
+        whatIsLiveliness.style.visibility = 'unset';
+    }
+    if(window.innerHeight>window.innerWidth || whatIsVisible===false){ //PORTRAIT MODE HIDES CANVAS AND "WHAT IS" 
+        canvasDiv.style.visibility = 'hidden';
+        relAbs.style.visibility = 'hidden';
+        showHide.style.visibility = 'hidden';
+        xaxis.style.visibility = 'hidden';
+        yaxis.style.visibility = 'hidden';
+        loadData.style.visibility = 'hidden';
+        $('#instructions').css('grid-column', '3/98');
+        $('#instructionsContentContainer').css('grid-column', '3/98');
+        $('#dataTable').css('grid-column', '3/98');
+        $('#addButton').css('grid-column', '3/98');
+        $('.hiddenAnchor').each( (i,val)=>{
+            val.style.visibility = 'unset'
+        })
+    }
+    else{
+        canvasDiv.style.visibility = 'unset';
+        canvasDiv.style.visibility = 'unset';
+        relAbs.style.visibility = 'unset';
+        showHide.style.visibility = 'unset';
+        xaxis.style.visibility = 'unset';
+        yaxis.style.visibility = 'unset';    
+        loadData.style.visibility = 'unset';  
+        $('.hiddenAnchor').each( (i,val)=>{
+            val.style.visibility = 'hidden'
+        })
+        $('#dataTable').css('grid-column', '26/98');
+        $('#addButton').css('grid-column', '26/98'); 
+        resizeInstructionsAndCanvas(canvas, h, w);
+    }
+}
+function resizeInstructionsAndCanvas(canvas, h, w) {
+    redrawCanvas(canvas);
+    //canvas.height = h < w ? w : h;
+    //canvas.width = canvas.height;
+    let originalCanvasDivWidth = document.getElementById('canvasDiv').width;
     document.getElementById("canvasDiv").style.width = canvas.width + "px";
-    
     let windowWidth = window.innerWidth;
-    let percentOccupiedLeftOfGrid = .25  + (parseInt(document.getElementById("canvasDiv").style.width) / windowWidth);
-
-    let spaceForInstructions = (100 * (.97 -   percentOccupiedLeftOfGrid))-1;
+    let percentOccupiedLeftOfGrid = .25 + (parseInt(document.getElementById("canvasDiv").style.width) / windowWidth);
+    let spaceForInstructions = (100 * (.98 - percentOccupiedLeftOfGrid)) - 1;
+  
     let yaxis = document.getElementById("yAxis");
     let xaxis = document.getElementById("xAxis");
     let loadDataButton = document.getElementById("loadData");
-    yaxis.style.top = (-20 + canvas.offsetTop + canvas.height  - (1 * yaxis.offsetWidth))+ "px"
-    xaxis.style.left = canvas.offsetLeft + loadDataButton.offsetWidth   + 40 + "px"; //(canvas.offsetLeft + (windowWidth * .1)) + "px";
-    xaxis.style.top = (canvas.offsetTop + canvas.height + - (1 * xaxis.offsetHeight) ) + "px"
-    let rotateWidth = (-.45 * yaxis.offsetWidth) + canvas.offsetLeft 
+    yaxis.style.top = ( canvas.offsetTop + (canvas.height/1.5) - (1 * yaxis.offsetWidth)) + "px";
+    xaxis.style.left = canvas.offsetLeft + (canvas.width / 2) +   "px"; //(canvas.offsetLeft + (windowWidth * .1)) + "px";
+    xaxis.style.top = (canvas.offsetTop + canvas.height + -(1 * xaxis.offsetHeight)) + "px";
+    let rotateWidth = (-.45 * yaxis.offsetWidth) + canvas.offsetLeft;
     yaxis.style.left = rotateWidth + "px";
-
     let ctx = DrawResiliancyLine();
+ 
+
     if (plotHookSet === false) {
         //var elementsArray = document.querySelectorAll('.livelyInput');
-
         $(".livelyInput").bind('keyup input', function () {
             let canvas = document.getElementById('myCanvas');
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
         });
-
-
         plotHookSet = true;
         document.getElementById("btnPlot").onclick = () => {
             let canvas = document.getElementById('myCanvas');
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
-        }
+        };
     }
     canvas.onmousemove = function (e) {
         let x = e.layerX;
         document.getElementById("x").innerText = x;
         let h = document.getElementById("myCanvas").height;
         let w = document.getElementById("myCanvas").width;
-        //console.log("mouse move hw: " + h + "," + w);
         let y = Math.abs(h - e.layerY);
         document.getElementById("y").innerText = y;
-
         var p = {
             x,
             y
-        }
+        };
         let lineFromPoint = {
             x: 0,
             y: h,
-        }
+        };
         let lineToPoint = {
             x: w,
             y: 0,
-        }
+        };
         let outReturnPoint = { x: 0, y: 0 };
         let d = distToSegment(p, lineFromPoint, lineToPoint, outReturnPoint);
-
-        document.getElementById("distance").innerText = d;//distToSegment(p, lineFromPoint, lineToPoint, outReturnPoint);
+        document.getElementById("distance").innerText = d; //distToSegment(p, lineFromPoint, lineToPoint, outReturnPoint);
         document.getElementById("returnPoint").innerText = Math.round(outReturnPoint.x) + "," + Math.round(outReturnPoint.y);
         document.getElementById("w").innerText = w;
         let plusOrMinus = 1;
         if (outReturnPoint.x >= x) {
-            document.getElementById("plusOrMinus").innerText = "NEGATIVE"
+            document.getElementById("plusOrMinus").innerText = "NEGATIVE";
             plusOrMinus = -1;
         }
         else {
-            document.getElementById("plusOrMinus").innerText = "POSITIVE"
+            document.getElementById("plusOrMinus").innerText = "POSITIVE";
         }
         document.getElementById("liveliness").innerText = (plusOrMinus * d).toFixed(2);
-
-
-    }
-
-    //$('#canvasDiv').css('border''3px solid gray');
-    //$('#canvasDiv').css('border-radius''5px');
-
+    };
 }
+
 function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
-    //console.log("input hw: " + h + "," + w);
     let plotPoint = getPlotPoint();
-    //console.log("plot point before invert: " + plotPoint.y);
     document.getElementById("plotPoint").innerText = plotPoint.x.toFixed(1) + "," + plotPoint.y.toFixed(1);
     let y = Math.abs(h - plotPoint.y);
 
@@ -95,7 +138,6 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
         x: plotPoint.x,
         y
     }
-    //console.log("Point p after invert: " + p.y);
     let lineFromPoint = {
         x: 0,
         y: h,
@@ -108,7 +150,6 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
     let outReturnPlotPoint = { x: 0, y: 0 };
     //At this point p is in cartesian space which is what we need for the distance and return calculations
     let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
-    //console.log("outReturn: " + outReturnPlotPoint.y);
 
     let plusOrMinus = 1;
     if (outReturnPlotPoint.x >= plotPoint.x) {
@@ -117,7 +158,6 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
     document.getElementById("livelinessEntered").innerText = (plusOrMinus * dEntered).toFixed(2);
 
     //but before drawing, we have to invert
-    //console.log("outReturn before invert: " + outReturnPlotPoint.y);
     document.getElementById("livelyPoint").innerText = outReturnPlotPoint.x.toFixed(2) + "," + outReturnPlotPoint.y.toFixed(2)
     outReturnPlotPoint.y = h - outReturnPlotPoint.y;
     
@@ -169,32 +209,70 @@ function getPlotPoint() {
     let plotPointY = (w * elasticityPercent);
     return { x: plotPointX, y: plotPointY }
 }
-
-var showingDataTable = true;
 function toggleCanvas() {
     showingDataTable = !showingDataTable;
+    redrawCanvas( );
+}
+var showingDataTable = true;
+counter = 0;
+function redrawCanvas(canvas) {
+    //console.log("****  REDRAW CANVAS ****")
     let canvasDiv = document.getElementById('canvasDiv');
-    let canvas = document.getElementById('myCanvas');
+    if(! canvas){
+        canvas = document.getElementById('myCanvas');
+    }
+    
+    let pixelsToDataTable = window.innerHeight * (.76-.14);
+    let pixelsToInstructions = window.innerWidth * (.57-.26);
+    //console.log("pixelsToDT | pixelsToInstructions: " + pixelsToDataTable.toString() + "|" + pixelsToInstructions.toString())
+    let startColForInstructions = 57;
     if (showingDataTable) {
-        $('#myCanvas').css('grid-row', '14/70');//56%
-        $('#myCanvas').css('grid-column', '26/65');
+        if(pixelsToDataTable < pixelsToInstructions){
+            //console.log("We can go all the way down to 70");
+            $('#myCanvas').css('grid-row', '14/70');
+            canvas.height =pixelsToDataTable;
+            canvas.width = canvas.height
+        }
+        else{ 
+            let percentWeCanGoDown =  pixelsToInstructions / pixelsToDataTable
+            let pixelsToGoDown = percentWeCanGoDown * pixelsToDataTable;
+            let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
+            let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
+            //console.log("Going down to " + endPercent);
+            $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
+            canvas.width = pixelsToInstructions;
+            canvas.height = canvas.width
+        }
+        //console.log("Canvas Width|Height: " + counter + "| " +  canvas.width + "|" + canvas.height);
+
         $('#myCanvas').css('z-index', '0');
-        canvas.height = "56%"
-        canvas.width = canvas.height;
+         
+        let canvasPercentAtRightSide = 26 + parseInt( 100*(canvas.width ) / window.innerWidth);
+        let showHidePosition = (canvasPercentAtRightSide -16 ).toString() + '/' + (canvasPercentAtRightSide  ).toString()
+        $('#showHide').css('grid-column', showHidePosition);         
+        counter++
+        //Now that the canvas has been drawn into position we can draw the instructions.
+        //The assumption for canvas placement is that the instructions were at .57% (which may have
+        //therefore constrained the canvas).  Now that the canvas has been drawn though, the instructions
+        //will actually go just to their left
+        console.log("instructions setting to: ")
+        let canvasRightEdgePercentPosition = (canvas.offsetLeft + canvas.width) / window.innerWidth;
+        console.log("instructions setting to: " + canvasRightEdgePercentPosition)
+        let instructionPosition = parseInt(2 + (100 * canvasRightEdgePercentPosition )) + "/100"  
+        console.log("instructions setting to: " + instructionPosition)
+        $('#instructions').css('grid-column', instructionPosition);   
+        $('#instructionsContentContainer').css('grid-column', instructionPosition);   
     }
     else {
         $('#myCanvas').css('grid-row', '14/101');//87%
         $('#myCanvas').css('grid-column', '26/101');
         $('#myCanvas').css('z-index', '99');
-        canvas.height = "87%"
+        //canvas.height = "87%"
         canvas.width = canvas.height;
     }
  
 }
-function hideDataTable() {
-    return;
 
-}
 function toggleSwitch(subclass, leftAction, rightAction) {
 
     var x = document.getElementsByClassName("toggleLabel");
