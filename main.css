@@ -25,10 +25,11 @@ label{
 }
 #whatIsLivelinessDiv{
     margin-top:0px;
-     
+    border-right: 2px solid gray;
+    /* border-image: linear-gradient(to right, rgb(87, 87, 87) , rgb(123, 123, 123) 50%, rgb(230, 230, 230)); */
 }
 .textIndent{
-
+    
     margin-bottom: 5px;
     padding:10px  10px 10px 10px
 }
@@ -69,9 +70,12 @@ label{
     grid-row: 11/101;
     
 }
-th:first-child {
-    visibility: hidden;
-}
+ th:nth-child(6) {
+    background: yellow;
+} 
+td:nth-child(6) {
+    background: yellow;
+} 
 span > a {
     color:rgb(231, 83, 83);
     font-size: calc(12px + .2vw);
@@ -87,23 +91,34 @@ span > a {
     grid-column: 45/65;
     grid-row: 11/14;
 }
-
+#loadDataButton {
+    visibility: hidden;
+}
 #loadData {
-    grid-column: 26/30;
-    grid-row: 71/75;
+    grid-column: 60/65;
+    grid-row: 90/95;
     z-index: 99;
     width:  3vw;
+    
 }
-
+.lively {
+    font-weight: bold;
+    color: red;
+}
 #addButton {
-    background-color: rgb(237, 243, 245); /* rgb(237, 243, 245);*/
+    /* background-color: rgb(237, 243, 245); rgb(237, 243, 245);*/
     grid-column: 26/31;
-    grid-row: 77/103;
-     z-index: 99; 
-    background-image: linear-gradient(to bottom, rgb(237, 243, 245) ,   rgb(219, 225, 255));
+     grid-row: 77/103;
+    z-index: 99; 
+    /*background-image: linear-gradient(to bottom, rgb(237, 243, 245) ,   rgb(219, 225, 255)); */
     width:  3vw;
+    display: flex;
+    margin-top: 5px;
 }
-
+#imgAdd{
+    margin-right: 5px;
+    margin-left: 2px;
+}
  #innerGrid{
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -129,9 +144,10 @@ span > a {
  
 #instructionsContentContainer{
     grid-column: 57/100;
-    grid-row: 15/70;
-    height: calc(0px + 60vh); 
+    grid-row: 15/72;
+    height: calc(0px + 61vh); 
     overflow-y: scroll;
+    border-left: 2px solid gray;
 }
 #instructionsContent {
     /* grid-column: 57/97;
@@ -139,9 +155,15 @@ span > a {
     background: linear-gradient(to bottom, #ffffff , #dca6a6);
     padding: 20px 10px 10px 0px;
 }
-
+.addNewYarnModalBody {
+    background: linear-gradient(to right, #ffffff ,#eeeeee 43%, #c1d4f6);
+}
 #myCanvas{
     background-color: rgb(219, 225, 255);
+    outline: 2px solid slateblue;
+}
+.canvasText{
+    font-size: 12px;
 }
 #canvasDiv {
     grid-column: 26/46;

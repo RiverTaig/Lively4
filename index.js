@@ -1,9 +1,7 @@
 let prevX = -1;
 let prevY = -1;
 let plotHookSet = false;
-function clearCanvas(){
-    onResize();
-}
+
 function onResize() {
     //The canvas (which is always square) starts at either column 3 or 26 depending on if "What is Liveliness"
     // is visible the canvas disappears if the height exceeds the width (i.e "portrait"), and "Instructions"
@@ -128,6 +126,115 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
         document.getElementById("liveliness").innerText = (plusOrMinus * d).toFixed(2);
     };
 }
+function AddRow(){
+    var t = $('#dt').DataTable();
+    t.row.add({
+        "notes" : "this is a test"
+    })
+}
+function Init(){
+    onResize();
+    var c = document.getElementById("rulerCanvas");
+    var ctx = c.getContext("2d");
+    var img = new Image();
+    img.onload= drawImageScaled.bind(null, img, ctx);
+    drawImageScaled(img, ctx);
+    img.src = 'ruler.png'
+
+    var c1 = document.getElementById("originalCanvas");
+    var ctx1 = c1.getContext("2d");
+    var img1 = new Image();
+    img1.onload= drawImageScaled.bind(null, img1, ctx1);
+    drawImageScaled(img1, ctx1);
+    img1.src = 'stretched.jpg'
+
+    var c2 = document.getElementById("stretchedCanvas");
+    var ctx2 = c2.getContext("2d");
+    var img2 = new Image();
+    img2.onload= drawImageScaled.bind(null, img2, ctx2);
+    drawImageScaled(img2, ctx2);
+    img2.src = 'stretched.jpg'
+
+    var c3 = document.getElementById("relaxedCanvas");
+    var ctx3 = c3.getContext("2d");
+    var img3 = new Image();
+    img3.onload= drawImageScaled.bind(null, img3, ctx3);
+    drawImageScaled(img3, ctx3);
+    img3.src = 'stretched.jpg'
+}
+function drawImageScaled(img, ctx) {
+    var canvas = ctx.canvas ;
+    var hRatio = canvas.width  / img.width    ;
+    var vRatio =  canvas.height / img.height  ;
+    var ratio  = Math.min ( hRatio, vRatio );
+    var centerShift_x = ( canvas.width - img.width*ratio ) / 2;
+    var centerShift_y = ( canvas.height - img.height*ratio ) / 2;  
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.drawImage(img, 0,0, img.width, img.height, centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);  
+ }
+function loadTable () {
+    
+    var t = $('#example').DataTable({
+        "scrollY": "20vh",
+        "columns" : [
+            {"width":"80px"},null,null,null,null,null,null
+        ],
+        "searching": false,
+        "scrollCollapse": true,
+        "paging":         false,
+        "info" : false,
+        select: {
+            style: 'single'
+        }
+    });
+    $('#example tbody').on( 'click', 'img.icon-delete', function () {
+        t
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+        if(t.rows()[0].length === 0){
+            let ldb = document.getElementById("loadDataButton")
+            ldb.style.visibility = 'unset';
+        }
+        else{
+            let ldb = document.getElementById("loadDataButton")
+            ldb.style.visibility = 'hidden';
+        }
+    } );
+    var counter = 1;
+    $('#example tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+    $('#loadDataButton').on( 'click', function () {
+        let sampleSets = [sampleSet1(),sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
+        let canvas = document.getElementById('myCanvas');
+        sampleSets.forEach(sampleSet => {
+            for(let i = 0 ; i < sampleSet.length; i++){
+                let data = sampleSet[i].split(',');
+                let sampleId = data[0];
+                let id = document.getElementById("sampleId").value = data[0];
+                let sl = document.getElementById("sl").value = data[1];
+                let el = document.getElementById("el").value = data[2];
+                let rl = document.getElementById("rl").value = data[3];
+                let lively = drawPlotPointAndCalculateLiveliness (canvas.width, canvas.height,false);
+                t.row.add( [
+                    id,
+                    'xx',
+                    el,
+                    rl,
+                    "<span class='lively'>" + lively + "</span>",
+                    'notes',
+                    "<img width='32px' class='icon-delete' height='32px' src='trash.png'></img>"
+                ] ).draw( false );
+         
+                counter++;
+            }            
+        });
+
+
+    } );
+ 
+}
 
 function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
     let plotPoint = getPlotPoint();
@@ -183,7 +290,7 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true) {
     ctx.fillText(sample , p.x+9, p.y);
     let livelyness = (plusOrMinus * dEntered).toFixed(2);
     ctx.fillText(livelyness , p.x+9, p.y+12);
-
+    return livelyness
 }
 
 function DrawResiliancyLine() {
@@ -346,10 +453,10 @@ function getCanvas() {
     return { ctx, canvas };
 }
 function runSample(){
-    let sampleSets = [sampleSet1(),sampleSet2(),sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
+    let sampleSets = [sampleSet1(),sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
     let htmlString = ""
     sampleSets.forEach(sampleSet => {
-  
+        let canvas = document.getElementById('myCanvas');
         for(let i = 0 ; i < sampleSet.length; i++){
             let data = sampleSet[i].split(',');
             let sampleId = data[0];
@@ -357,7 +464,7 @@ function runSample(){
             document.getElementById("sl").value = data[1];
             document.getElementById("el").value = data[2];
             document.getElementById("rl").value = data[3];
-            let canvas = document.getElementById('myCanvas');
+            
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height,false);
             htmlString += "<br> " + (sampleId + "," + document.getElementById("livelinessEntered").innerText);
 
@@ -366,41 +473,44 @@ function runSample(){
     
     document.getElementById("output").innerHTML = htmlString;
 }//'#1.1,10,10.75,10'
+
+ 
+
 function sampleSet1(){
 return     ['#1.1,10,10.75,10',
-'#2.1,10,11,10',
-'#3.1,10,11.625,10.125',
-'#4.1,10,11.75,10.125',
-'#5.1,10,12.125,10',
-'#6.1,10,12.625,10.125',
-'#7.1,10,13.875,10',
-'#8.1,10,10.625,10',
-'#9.1,10,10.75,10.125',
-'#10.1,10,10.875,10',
+'#2.1,10,11.25,10',
+'#3.1,10,11.75,10.125',
+'#4.1,10,11.875,10.125',
+'#5.1,10,12.375,10',
+'#6.1,10,12.5,10.125',
+'#7.1,10,13.5,10',
+'#8.1,10,10.5,10',
+'#9.1,10,10.625,10.125',
+'#10.1,10,10.75,10',
 '#11.1,10,11,10',
-'#12.1,10,11.625,10',
-'#13.1,10,12,10.125',
-'#14.1,10,12.125,10.25',
-'#15.1,10,13.125,10.25',
-'#16.1,10,14.25,10.25']
+'#12.1,10,11.25,10',
+'#13.1,10,12.5,10.125',
+'#14.1,10,12.375,10.25',
+'#15.1,10,13.0,10.25',
+'#16.1,10,14.5,10.25']
 }
 function sampleSet2(){
     return ['#1.2,10,10.75,10',
-        '#2.2,10,11.375,10.125',
-        '#3.2,10,11.5,10',
-        '#4.2,10,12,10',
-        '#5.2,10,12.125,10.125',
-        '#6.2,10,13,10.125',
-        '#7.2,10,14.625,10.125',
-        '#8.2,10,10.5,10.125',
-        '#9.2,10,10.875,10',
+        '#2.2,10,11.0,10.125',
+        '#3.2,10,11.75,10',
+        '#4.2,10,12.125,10',
+        '#5.2,10,11.875,10.125',
+        '#6.2,10,13.25,10.125',
+        '#7.2,10,13.125,10.125',
+        '#8.2,10,10.375,10.125',
+        '#9.2,10,10.5,10',
         '#10.2,10,10.625,10',
         '#11.2,10,11,10',
-        '#12.2,10,11.375,10',
-        '#13.2,10,13.125,10',
-        '#14.2,10,12.5,10',
-        '#15.2,10,13.75,10.25',
-        '#16.2,10,14.125,10.25',
+        '#12.2,10,11.625,10',
+        '#13.2,10,12.5,10',
+        '#14.2,10,12.125,10',
+        '#15.2,10,13.25,10.25',
+        '#16.2,10,14.25,10.25',
     ]
 }
 function sampleSet3(){
