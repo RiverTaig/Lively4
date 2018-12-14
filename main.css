@@ -70,10 +70,10 @@ label{
     grid-row: 11/101;
     
 }
- th:nth-child(6) {
+ th:nth-child(5) {
     background: yellow;
 } 
-td:nth-child(6) {
+td:nth-child(5) {
     background: yellow;
 } 
 span > a {
@@ -157,6 +157,14 @@ span > a {
 }
 .addNewYarnModalBody {
     background: linear-gradient(to right, #ffffff ,#eeeeee 43%, #c1d4f6);
+}
+.addNewYarnModalDialog {
+    max-width: unset !important;
+    width:50% !important;
+    margin: 30px auto;
+}
+input[type='number'],input[type='text'], #yarnNotes {
+    color: blue;
 }
 #myCanvas{
     background-color: rgb(219, 225, 255);
@@ -351,4 +359,19 @@ h1 {
 [data-tip]:hover:before,
 [data-tip]:hover:after {
 	display:block;
+}
+#wrapper2 {
+    position:relative;
+    width:300px;
+    height:150px;
+}
+ 
+#tip {
+    background-color:rgb(235, 216, 109);
+    border:1px solid rgb(0, 0, 0);
+    border-radius: 5px;
+    position:absolute;
+    left:-200px;
+    top:100px;
+    z-index: 999999;
 }

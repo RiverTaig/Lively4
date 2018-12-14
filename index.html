@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="main.css">
     <script src="index.js"></script>
     <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -20,6 +21,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src = "mousewheel.js"></script>
+
     <style>
         body {
             overflow: hidden;
@@ -54,7 +58,26 @@
 
         }
     </style>
-
+      <script>
+            $(function() {
+               $( "#txtResiliancyLength" ).spinner({
+                  step:.1,
+                  min:10,
+                  max:15,
+                  spin: function( event, ui ) {
+                    adjustElRlImagesOnCanvas('resiliancy');
+                  }
+               });
+               $( "#txtElasticLength" ).spinner({
+                  step:.1,
+                  min:10,
+                  max:15,
+                  spin: function( event, ui ) {
+                    adjustElRlImagesOnCanvas('elastic');
+                  }
+               });
+            });
+         </script>
 </head>
 
 <body style="position: relative;" onresize="onResize()">
@@ -166,8 +189,11 @@
 
         </div>
         <div id="canvasDiv">
+                <!-- <div id="wrapper2"> -->
             <canvas id="myCanvas">
             </canvas>
+            <canvas id="tip" width=100 height=25></canvas>
+                <!-- </div> -->
             <!--position: absolute;top:0px;right:0px;background-color:#cccccccc;width:100%;height:100px;margin-top:10vh;margin-right: 3vw;-->
 
         </div>
@@ -297,7 +323,7 @@
         </div>
         <div id="addButton">
             <img id="imgAdd" src="add.png" data-toggle="modal" data-target="#addNewYarnModal" width="32px" height="32px">
-            <img id="imgSample" src="sample.png" width="32px" height="32px">
+            <img id="imgSample" title="add/remove sample data from the table and plot areas." onclick="loadSamples()" src="removeSample.png" width="32px" height="32px">
             <!-- <button type="submit" class="btn btn-primary">ADD
                 
             </button> -->
@@ -333,7 +359,7 @@
                 </thead>
             </table>
         </div>
-        <div id="loadData" purpose="load sample data button">
+          <div id="loadData" purpose="load sample data button">
             <div style="height: 0px;">
                 <div><button id="loadDataButton" type="button" class="btn btn-success xinvisible" data-toggle="modal"
                         "       >
@@ -341,7 +367,7 @@
                 </div>
             </div>
 
-        </div>
+        </div>  
     </div>
     <script>
         window.onload = () => {
@@ -416,43 +442,43 @@
                 </div>
                 <div class="modal fade" id="addNewYarnModal"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modal-lg"   role="document">
+                <div class="modal-dialog addNewYarnModalDialog"   role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel2">Add a New Yarn to the Table and Plot</h5>
+                            <h5 class="modal-title" id="exampleModalLabel2">Add New Yarn</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body addNewYarnModalBody"  >
                             <form>
-                                <div class=" row">
+                                <div class="row">
                                     <div class="col-lg-5">
                                         <div class="form-group">
-                                            <label for="yarnId">Yarn ID</label>
+                                            <label for="txtYarnId">Yarn ID</label>
                                             <input type="text" style="width:70%" maxlength="6" size="10" class="form-control"
-                                                id="yarnId" aria-describedby="yarnIdHelp" placeholder="Enter Yarn ID">
+                                                id="txtYarnId" aria-describedby="yarnIdHelp" placeholder="Enter Yarn ID">
                                             <small id="yarnIdHelp" class="form-text text-muted">Enter a unique ID to help
                                                 you identify this yarn in the table.</small>
                                         </div>
                                         <div class="form-group">
-                                            <label for="elasticLen">Elastic Length (inches)</label>
-                                            <input type="number" style="width:30%" class="form-control" id="elasticLen"
-                                                aria-describedby="elasticHelp" placeholder="11">
+                                            <label for="txtElasticLength">Elastic Length (inches)</label>
+                                            <input id="txtElasticLength" type="number" step=".05" min="10" max="20" style="width:30%" class="form-control"  
+                                                aria-describedby="elasticHelp" value="11">
                                             <small id="elasticHelp" class="form-text text-muted">Length in inches that a
                                                 'relaxed' 10" strand becomes when stretched.</small>
                                         </div>
                                         <div class="form-group">
-                                            <label for="resiliantLen">Resiliancy Length (inches)</label>
-                                            <input type="number" style="width:30%" class="form-control" id="resiliantLen"
-                                                aria-describedby="resiliantHelp" placeholder="10.5">
+                                            <label for="txtResiliancyLength">Resiliancy Length (inches)</label>
+                                            <input  id="txtResiliancyLength" type="number"  step=".05"  style="width:30%" class="form-control" 
+                                                aria-describedby="resiliantHelp" placeholder="10.5" value ="10.5" min="9" max="20">
                                             <small id="resiliantHelp" class="form-text text-muted">Length in inches that
                                                 the stretched yarn returns to after 1 minute.</small>
                                         </div>
             
                                         <div class="form-group">
-                                            <label for="yarnNotes">Notes</label>
-                                            <textarea class="form-control" id="yarnNotes" rows="3" aria-describedby="notesHelp"></textarea>
+                                            <label for="txtYarnNotes">Notes</label>
+                                            <textarea class="form-control" id="txtYarnNotes" rows="3" aria-describedby="notesHelp"></textarea>
                                             <small id="resiliantHelp" class="form-text text-muted">Notes are seen as popups
                                                 in the yarn plot area.</small>
                                         </div>
@@ -488,25 +514,27 @@
                                                     <div class="form-group">Color</div>
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optRed" value="red" checked>
                                                                         Red
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optBlue" value="blue">
                                                                         Blue
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" >
+                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optGreen" value="green" >
                                                                         Green
                                                         </label>
                                                     </div>                                                        
                                                 </fieldset>
                                                 <svg class="col-xs-2" style="margin-left:50px;margin-top:25px" height="24" width="24">
-                                                        <polygon points="12,0 24,24 0,24" style="fill:lime;stroke:purple;stroke-width:1" />
+                                                        <polygon class="yarnSymbol" id="symbolTriangle" style="visibility:hidden" fill="red" points="12,0 24,24 0,24" />
+                                                        <polygon  class="yarnSymbol" id="symbolSquare" style="visibility:hidden" fill="red" points="0,0 0,24 24,24 24,0"  />
+                                                        <circle  class="yarnSymbol" id="symbolCircle" style="visibility:unset" fill="red" cx="12" cy="12" r="12"   />
                                                         Sorry, your browser does not support inline SVG.
                                                 </svg>
                                             </div>
@@ -516,20 +544,23 @@
                                             <canvas id="rulerCanvas" width="50" height="600"  ></canvas>
                                         </div>  
                                     <div class="col-lg-1 canvasText">
-                                            <canvas id="originalCanvas" height="545" width="50" ></canvas>
-                                            <div>Start: <span>10"</span></div>
-                                        </div>
+                                            <canvas id="originalCanvas" height="600" width="50" ></canvas>
+                                            <div id='startLabel'>Start: <span>10"</span></div>
+                                    </div>
                                     <div class="col-lg-1 canvasText">
                                         <canvas id="stretchedCanvas" height="600" width="50"  ></canvas>
-                                        <div>Stretched: <span>11"</span></div>
+                                        <div id='elasticLabel'><span>Elastic</span> Length<span><div id='elasticLabelValue'>11"</div></div>
                                     </div>
                                     <div class="col-lg-1 canvasText">
-                                            <canvas id="relaxedCanvas" height="573" width="50"  ></canvas>
-                                            <div>Return: <span>10.5"</span></div>
+                                            <canvas id="relaxedCanvas" height="600" width="50"  ></canvas>
+                                            <div id='resiliancyLabel' style='z-index:9'><span>Resilancy</span> Length<span></span> <div id='resiliancyLabelValue'>10.5"</div></div>
                                         </div>
                                     </div>
-            
-                                <button type="submit" class="btn btn-primary"  data-dismiss="modal">OK</button>
+                                    <!-- <div>
+                                            <label for = "spinner-4">Amount to donate:</label>
+                                            <input id = "spinner-4" name = "spinner" value = "10">
+                                    </div> -->
+                                <button type="submit" id="btnAddYarn" class="btn btn-primary"  data-dismiss="modal">Add Yarn</button>
                             </form>
                         </div>
                         <div class="modal-footer">
