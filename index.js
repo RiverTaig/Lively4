@@ -117,7 +117,7 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
             console.log(ex);
         }
         
-        return;
+        //return;
         let x = e.layerX;
         document.getElementById("x").innerText = x;
         let h = document.getElementById("myCanvas").height;
@@ -149,7 +149,9 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
         else {
             document.getElementById("plusOrMinus").innerText = "POSITIVE";
         }
-        document.getElementById("liveliness").innerText = (plusOrMinus * d).toFixed(2);
+        let livelyness =  (plusOrMinus * d).toFixed(2);;
+        document.getElementById("liveliness").innerText =liveliness
+        console.log(   "(" + x + "," + y + ") : " + livelyness);
     };
 }
 
@@ -204,7 +206,7 @@ function Init() {
                 alert("Resiliancy Length must be less than Elastic Length");
                 error = true;
             }
-            if (yarnIds[yarnID !== undefined]) {
+            if (yarnIds[yarnID] === 1) {
                 alert("Sorry, that yarn ID is already in use. Please delete it first.")
                 error = true;
             }
@@ -212,8 +214,17 @@ function Init() {
                 event.preventDefault();
                 return false;
             }
-            let svgSymbol = '<svg height="16" width="16"><circle class="yarnSymbol" style="visibility:unset"  cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>'
+            yarnIds[yarnID] = 1
+            let svgSymbol =  '<svg height="16" width="16"><circle cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>'
+            if(symbol === 'triangle'){
+
+                svgSymbol = '<svg height="16" width="16"><polygon  points="8,0 16,16 0,16"  fill="' + color + '" />xx</svg>'
+            }
+            if(symbol === 'square'){
+                svgSymbol = '<svg height="16" width="16"><polygon points="0,0 0,16 16,16 16,0"  fill="' + color + '"  /></svg>'
+            }
             //h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset' ) {
+            //TODO adjust for new return type
             let lively = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, false, elasticLength, 10, resilancyLength, yarnID, color, symbol,8, yarnNotes);
             dataTableReference().row.add([
                 yarnID,
@@ -222,7 +233,7 @@ function Init() {
                 resilancyLength,
                 "<span class='lively'>" + lively + "</span>",
                 yarnNotes,
-                "<img width='32px' id='img" + yarnID + "' class='icon-delete' height='32px' src='trash.png'></img>"
+                "<img width='32px' yarnid='" + yarnID +  "' id='img" + yarnID + "' class='icon-delete' height='32px' src='trash.png'></img>"
             ]).draw(false);
         }
         catch (ex) {
@@ -230,6 +241,49 @@ function Init() {
             console.log("ERROR " + ex.toString())
         }
     });
+}
+function Test(){
+    PlotDataTableOnCanvasUsingRelativeScale();
+}
+function PlotDataTableOnCanvasUsingRelativeScale(){
+    let minMaxXY = getMinMaxAbsXY()
+     
+    let erase = false;// document.getElementById("eraseTest").checked;
+    let yarnId = Math.random();
+    useRelative = true
+    let rows = dataTableReference().table().rows();
+    let w = parseFloat(canvasRef().width);
+    let minX = 9999; let minY = 9999; let maxX = -9999; let maxY = -9999;
+    for(let i = 0 ; i < rows.count(); i++){
+        let el =  parseFloat(rows.data()[i][2]);
+        let rl =  parseFloat(rows.data()[i][3]);
+        let sl =  10;
+        let yarnNotes = rows.data()[i][5]
+        let absXY = rows.data()[i][7].split(',')
+        let absX = parseFloat(absXY[0]);
+        let absY = parseFloat(absXY[1]);
+        let percentRangeX = (absX-minMaxXY.minRLAdj) / (minMaxXY.maxRLAdj - minMaxXY.minRLAdj)
+        let newX = w * percentRangeX;
+        let percentRangeY = (absY-minMaxXY.minELAdj) / (minMaxXY.maxELAdj - minMaxXY.minELAdj)
+        let newY = w * percentRangeY;
+        if(newX < minX){
+            minX = newX
+        }
+        if(newX > maxX){
+            maxX = newX
+        }
+        if(newY < minY){
+            minY = newY
+        }
+        if(newY > maxY){
+            maxY = newY
+        }
+        let rp = {x:newX, y: newY}
+        drawPlotPointAndCalculateLiveliness(w,w,erase,el,sl,rl,i.toString(),'blue', 'circle',8,yarnNotes,i.toString(),rp)
+        erase = false;
+    }
+    debugger
+    
 }
 function loadSamples(x) {
     let sampleButton = document.getElementById('imgSample')
@@ -242,7 +296,6 @@ function loadSamples(x) {
                 //REMOVE this row
                 let selector = 'img' + id.replace('#', 'x'); //# are illegal in ids
                 let trashImage = document.getElementById(selector);
-                //debugger;
                 trashImage.click();
             }
         });
@@ -362,7 +415,7 @@ function dataTableReference() {
         _dataTableReference = $('#example').DataTable({
             "scrollY": "20vh",
             "columns": [
-                { "width": "80px" }, null, null, null, null, null, null
+                { "width": "80px" }, null, null, null, null, null, null, { visible: true }
             ],
             "searching": false,
             "scrollCollapse": true,
@@ -379,7 +432,6 @@ function loadTable() {
 
     let t = dataTableReference();
     $('#example tbody').on('click', 'img.icon-delete', function () {
-        //debugger;
         let idToRemove = -1;
         let thisYarnId = this.attributes["yarnid"].value;
         for(let i = 0 ; i < dots.length; i++){
@@ -392,8 +444,6 @@ function loadTable() {
         if(idToRemove != -1){
             dots.splice(idToRemove, 1);
         }
-        //debugger;
-
         t
             .row($(this).parents('tr'))
             .remove()
@@ -418,15 +468,17 @@ function loadTable() {
                 let sl = data[1];
                 let el = data[2];
                 let rl = data[3];
-                let lively = drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false, el, sl, rl, id);
+                let {plotPoint,livelyness} = drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false, el, sl, rl, id);
+
                 t.row.add([
                     id,
                     svgSymbol,
                     el,
                     rl,
-                    "<span class='lively'>" + lively + "</span>",
+                    "<span class='lively'>" + livelyness + "</span>",
                     'notes',
-                    "<img width='32px' yarnId='" + id + "' id='img" + id.replace('#', 'x') + "' class='icon-delete' height='32px' src='trash.png'></img>"
+                    "<img width='32px' yarnId='" + id + "' id='img" + id.replace('#', 'x') + "' class='icon-delete' height='32px' src='trash.png'></img>",
+                    plotPoint.x.toString() + "," + plotPoint.y.toString()
                 ]).draw(false);
                 counter++;
             }
@@ -440,26 +492,99 @@ function canvasRef() {
     }
     return _canvasRef;
 }
-function getPlotPointFromDataPoint(el, rl, sl) {
+function getMinMaxAbsXY(){
+
+    let dt = dataTableReference();
+    let ret = {
+        minEL : 999,
+        maxEL : -999,
+        minRL : 999,
+        maxRL : -999
+    }
+
+    for(let i  = 0; i < dt.rows().count(); i++){
+        let plotPoint = dt.table().rows().data()[i][7];
+        
+        let el = parseFloat(plotPoint.split(',')[1])
+        let rl = parseFloat(plotPoint.split(',')[0])
+        ret.minEL = el < ret.minEL ? el : ret.minEL;
+        ret.maxEL = el > ret.maxEL ? el : ret.maxEL;
+        ret.minRL = rl < ret.minRL ? rl : ret.minRL;
+        ret.maxRL = rl > ret.maxRL ? rl : ret.maxRL;
+    }
+    let deltaX = ret.maxRL - ret.minRL;
+    let deltaY = ret.maxEL - ret.minEL;
+    ret.minELAdj = ret.minEL - (.05*deltaY)
+    ret.minRLAdj = ret.minRL - (.05*deltaX)
+    ret.maxELAdj = ret.maxEL + (.05*deltaY)
+    ret.maxRLAdj = ret.maxRL + (.05*deltaX)
+    
+    
+    //debugger
+    return ret
+}
+var useRelative = false;
+function getPlotPointFromDataPoint(el, rl, sl ) {
+    el = parseFloat(el);
+    rl = parseFloat(rl);
+    sl = parseFloat(sl);
+    //debugger;
+    let minELAdj =1;
+    let maxELAdj = 1;
+    let deltaEL = 1;
+    let minRLAdj = 1;
+    let maxRLAdj = 1; 
+    let deltaRL = 1;
+    if(useRelative){
+        //EL
+        let {minEL,maxEL, minRL, maxRL} = getMinMaxAbsXY();
+        minELAdj = parseFloat(minEL) - parseFloat(.05 * (maxEL-minEL));
+        maxELAdj = parseFloat(maxEL) +  parseFloat(.05 * (maxEL-minEL));
+        deltaEL = maxELAdj-minELAdj;
+        //RL
+        minRLAdj = parseFloat(minRL) - parseFloat(.05 * (maxRL-minRL));
+        maxRLAdj = parseFloat(maxRL) +  parseFloat(.05 * (maxRL-minRL));
+        deltaRL = maxRLAdj-minRLAdj;
+    }
+    
     let w = canvasRef().width;
     let elasticityPercent = (el - sl) / sl;
-    let resiliancyPercent = (el - rl) / (el - sl);
+    let resiliancyPercent = (el - rl) / (el - sl); // (rl - sl) / (el-sl)
+    //
+    //  sl=10       el=15     rl=14    RPer=1/5=.2     4/5=.8
+    //
+    if(useRelative){
+        //elasticityPercent = //(el-minELAdj) / deltaEL;  
+        
+        //resiliancyPercent = //(el - minRLAdj) / (el - sl);                    //1 - ((rl-minRLAdj) / deltaRL);  
+    }
+
+    console.log(`GPP:  ${resiliancyPercent},${elasticityPercent}`)
     let plotPointX = w * resiliancyPercent;
     let plotPointY = (w * elasticityPercent);
     return { x: plotPointX, y: plotPointY }
 }
 //https://stackoverflow.com/questions/17064913/display-tooltip-in-canvas-graph
 
-function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset', yarnID="-1") {
-    var { outReturnPlotPoint, p, livelyness } = getLivelyness(el, rl, sl, h, w);
-    
-    let sizeOverTwo = Math.round (size/2.0);
-    dots.push({x:p.x, y:p.y, size, rXr : size*size, tip: yarnNotes, yarnID: sample});
-    let posX = p.x;
-    let posY = Math.round  (p.y - sizeOverTwo);
+function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset', yarnID="-1", relativePlotPoint = null) {
+    let outReturnPlotPoint = null; let p = null; let livelyness = -999;
+    if(relativePlotPoint === null)    {
+        // outReturnPlotPoint is the point on the line of zero liveliness, and p is plot point for the sample
+        let ret = getLivelyness(el, rl, sl, h, w);
+        outReturnPlotPoint = ret.outReturnPlotPoint;
+        p = ret.p; 
+        livelyness = ret.livelyness;
 
-    //but before drawing, we have to invert
-    outReturnPlotPoint.y = h - outReturnPlotPoint.y;
+        //dots is the array that holds informatio for the tooltip
+        dots.push({x:p.x, y:p.y, size, rXr : size*size, tip: yarnNotes, yarnID: sample});
+        //but before drawing, we have to invert
+        outReturnPlotPoint.y = h - outReturnPlotPoint.y;    
+    }
+    else{
+        p = relativePlotPoint;
+        //we have the plot point already (because we are in relative mode)
+        //but we don't know the liveliness or the point on the line
+    }
 
     let canvas = canvasRef();
     let ctx = canvas.getContext("2d");
@@ -472,22 +597,26 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
         ctx.arc(p.x, p.y, size, 0, size * Math.PI);
     }
     else if (symbol === 'triangle'){
-        
-        ctx.moveTo(posX,posY);
-        ctx.lineTo(posX + sizeOverTwo, p.y + sizeOverTwo);
-        ctx.lineTo(posX - sizeOverTwo,  p.y + sizeOverTwo);
+        ctx.moveTo(p.x,p.y - size);
+        ctx.lineTo(p.x + size, p.y + size);
+        ctx.lineTo(p.x - size,  p.y + size);
         ctx.fill();
     }
     else if (symbol === 'square'){
-        ctx.fillRect(p.x, p.y, size, size);
+        ctx.fillRect(p.x - size, p.y - size, size*2, size*2);
     }
     ctx.fill();
     ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    ctx.lineTo(outReturnPlotPoint.x, outReturnPlotPoint.y);
-    ctx.lineWidth = .5;
-    ctx.strokeStyle = "#FF0000";
-    ctx.stroke();
+
+    //TODO support lines for relative scale
+    if(relativePlotPoint === null){
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(outReturnPlotPoint.x, outReturnPlotPoint.y);
+        ctx.lineWidth = .5;
+        ctx.strokeStyle = "#FF0000";
+        ctx.stroke();
+    }
+
     if (el === -1) {
         sample = document.getElementById("sampleId").value;
     }
@@ -497,19 +626,49 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
 
     ctx.fillText(livelyness, p.x + 9, p.y + 12);
     //TODO push into table to ensure uniqueness
-    return livelyness
+    let plotPoint = p
+    return  {plotPoint, livelyness }
 }
 
-function getLivelyness(el, rl, sl, h, w) {
+function calcLivelinessFromPlotPoint(h, plotPoint, w, el) {
+    let y = Math.abs(h - plotPoint.y);
+    var p = {
+        x: plotPoint.x,
+        y
+    };
+    let lineFromPoint = {
+        x: 0,
+        y: h,
+    };
+    let lineToPoint = {
+        x: w,
+        y: 0,
+    };
+    let outReturnPlotPoint = { x: 0, y: 0 };
+    //At this point p is in cartesian space which is what we need for the distance and return calculations
+    let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
+    let plusOrMinus = 1;
+    if (outReturnPlotPoint.x >= plotPoint.x) {
+        plusOrMinus = -1;
+    }
+    if (el === -1) {
+        document.getElementById("livelinessEntered").innerText = (plusOrMinus * dEntered).toFixed(2);
+        document.getElementById("livelyPoint").innerText = outReturnPlotPoint.x.toFixed(2) + "," + outReturnPlotPoint.y.toFixed(2);
+    }
+    let livelyness = (plusOrMinus * dEntered).toFixed(2);
+    return { outReturnPlotPoint, p, livelyness };
+}
+
+function getLivelyness(el, rl, sl, h, w, useRelativeScale) {
     let plotPoint = null;
     if (el === -1) {
         plotPoint = getPlotPoint();
     }
     else {
-        plotPoint = getPlotPointFromDataPoint(el, rl, sl);
+        plotPoint = getPlotPointFromDataPoint(el, rl, sl, useRelativeScale);
     }
     let y = Math.abs(h - plotPoint.y);
-    var p = {
+    var p = { 
         x: plotPoint.x,
         y
     };
@@ -553,6 +712,8 @@ function getPlotPoint() {
     let resiliancyPercent = (el - rl) / (el - sl);
     document.getElementById("elasticity").innerText = elasticityPercent;
     document.getElementById("resiliancy").innerText = resiliancyPercent;
+    
+
     let plotPointX = w * resiliancyPercent;
     let plotPointY = (w * elasticityPercent);
     document.getElementById("plotPoint").innerText = plotPoint.x.toFixed(1) + "," + plotPoint.y.toFixed(1);
@@ -934,3 +1095,7 @@ function getYPixel(val) {
     return graph.height - (((graph.height - yPadding) / getMaxY()) * val) - yPadding;
 }
 
+
+
+
+// #1.1,10,10.75,10   sampleID,SL,EL,RL,COLOR,SYMBOL,NOTE

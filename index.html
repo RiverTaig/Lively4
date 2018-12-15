@@ -98,22 +98,24 @@
                     <h3 class="section">What is Liveliness ?</h3>
                     <div class="textIndent">
                         <div id="sampleEntry" style="visibility:unset">
-                            Liveliness provides fiber
-                            artists like yourselves
-
-                            a quick and easy way to get a feel for the relationship between the elasticity and
-                            resiliancy
-                            of a fiber, a yarn, or a knitted garmet.<p>orem iptate velit esse cillum dolore eu fugiat
-                                nulla
-                                pariatur. Excepteur sint occaecat cupidatat non proident</p>
-                            <p>orem ipsum dolor sit amet, consectetur adipiscing elit, sed quis nosquat. Duis aute
-                                irure
-                                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                Excepteur sint occaecat cupidatat non proident</p>
+                                Today’s handspinners have a handful of useful terms to describe and document their handspun yarns. Twists per inch (TPI), angle of twist (AOT), and wraps per inch (WPI) are now fairly well understood by all levels of handspinners. Although elasticity and resiliency are part of the common lexicon, elasticity is only used in the general sense, and resiliency appears rarely in descriptive terms about handspun yarns. Nevertheless, elasticity and resiliency are important factors in determining and predicting the behaviour of the ultimate application, namely knitted and woven garments. This study focuses on a quantitative analysis of the elasticity and resiliency of yarns where the constituent fibres are non-elastic blended with elastic fibres. Finally, the study presents a new quantitative method of describing handspun yarns in combined terms of elasticity and resiliency: liveliness.<br><br>
 
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
                                 More...</button>
+                                <div><br><br>
+                                    <!-- H: <input type="text" id="hTest"><br>
+                                    W: <input type="text" id="wTest"><br> -->
+                                    <!-- EL: <input type="text" id="elTest" value="12"><br>
+                                    RL: <input type="text" id="rlTest" value="11"><br>  
 
+                                    MIN E: <input type="text" id="eMin" value="10.2"><BR>
+                                    MAX E: <input type="text" id="eMax" value="15"><BR>
+                                    MIN R: <input type="text" id="rMin" value="10"><BR>
+                                    MAX R: <input type="text" id="rMax" value="14"><BR> 
+                                    Erase? <input type="checkbox" checked id="eraseTest">  <bR>                                          -->
+                                    <button type="button" class="btn btn-info" onclick="Test()" > 
+                                            Test</button>
+                                </div>
                         </div>
 
 
@@ -355,6 +357,7 @@
                         <th class=".lively">Liveliness</th>
                         <th>Notes</th>
                         <th>Remove</th>
+                        <th>abs XY</th>
                     </tr>
                 </thead>
             </table>
@@ -373,7 +376,15 @@
         window.onload = () => {
             Init();
             loadTable();
-            $("#loadDataButton").click(); }; </script> </body> <div class="modal fade" id="exampleModal"
+            $("#loadDataButton").click(); 
+        } 
+
+
+
+
+    </script> 
+    </body> 
+    <div class="modal fade" id="exampleModal"
                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">

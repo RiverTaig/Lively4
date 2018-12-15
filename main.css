@@ -12,22 +12,21 @@ label{
     font-size: calc(10px  + .5vw) !important;
 }
 #whatIsLivelinessDiv{
-    background-image:   url("unicorn-tails-1.jpeg");
-    background-color: rgba(255,255,255,0.7);
+    background-image: linear-gradient(to bottom, #ffffff , #dca6a6);
+    /* background-image:   url("WhatIsBG.jpg");
+    background-color: rgba(255,255,255,0.3);
     background-blend-mode: overlay;
     background-repeat: no-repeat;
-    background-size: cover;
-    height: auto;
+    background-size: cover; */
+    /* height: auto; */
     font-weight: 600;
     font-size: calc(10px + .5vw);
+    margin-top:0px;
+    border-right: 2px solid gray;
     /* overflow-y: scroll; */
     /* You may add things like width, height, background-size... */
 }
-#whatIsLivelinessDiv{
-    margin-top:0px;
-    border-right: 2px solid gray;
-    /* border-image: linear-gradient(to right, rgb(87, 87, 87) , rgb(123, 123, 123) 50%, rgb(230, 230, 230)); */
-}
+ 
 .textIndent{
     
     margin-bottom: 5px;
