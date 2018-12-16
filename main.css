@@ -69,12 +69,7 @@ label{
     grid-row: 11/101;
     
 }
- th:nth-child(5) {
-    background: yellow;
-} 
-td:nth-child(5) {
-    background: yellow;
-} 
+
 span > a {
     color:rgb(231, 83, 83);
     font-size: calc(12px + .2vw);

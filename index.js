@@ -456,19 +456,18 @@ function loadTable() {
     $('#loadDataButton').on('click', function () {
         let sampleSets = [sampleSet1(), sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
         let canvas = canvasRef();
-        let colors = ['blue', 'red'];
-        let symbols = ['triangle', 'square', 'circle'];
         sampleSets.forEach((sampleSet, index) => {
-            let color = colors[index]
-            let symbol = symbols[index]
-            let svgSymbol = '<svg height="16" width="16"><circle   class="yarnSymbol" style="visibility:unset"  cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>'
             for (let i = 0; i < sampleSet.length; i++) {
                 let data = sampleSet[i].split(',');
                 let id = data[0];
                 let sl = data[1];
                 let el = data[2];
                 let rl = data[3];
-                let {plotPoint,livelyness} = drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false, el, sl, rl, id);
+                let color = data[4];
+                let symbol = data[5];
+                let notes = data[6];
+                let svgSymbol = getSVGSymbol(color,symbol) ;
+                let {plotPoint,livelyness} = drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false, el, sl, rl, id,color, symbol, 8, notes,id);
 
                 t.row.add([
                     id,
@@ -476,7 +475,7 @@ function loadTable() {
                     el,
                     rl,
                     "<span class='lively'>" + livelyness + "</span>",
-                    'notes',
+                    notes,
                     "<img width='32px' yarnId='" + id + "' id='img" + id.replace('#', 'x') + "' class='icon-delete' height='32px' src='trash.png'></img>",
                     plotPoint.x.toString() + "," + plotPoint.y.toString()
                 ]).draw(false);
@@ -491,6 +490,16 @@ function canvasRef() {
         _canvasRef = document.getElementById("myCanvas")
     }
     return _canvasRef;
+}
+function getSVGSymbol(color, symbol) {
+    let svgSymbol = '<svg height="16" width="16"><circle cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>';
+    if (symbol === 'triangle') {
+        svgSymbol = '<svg height="16" width="16"><polygon  points="8,0 16,16 0,16"  fill="' + color + '" />xx</svg>';
+    }
+    if (symbol === 'square') {
+        svgSymbol = '<svg height="16" width="16"><polygon points="0,0 0,16 16,16 16,0"  fill="' + color + '"  /></svg>';
+    }
+    return svgSymbol;
 }
 function getMinMaxAbsXY(){
 
@@ -879,42 +888,43 @@ function runSample() {
 }//'#1.1,10,10.75,10'
 
 function sampleSet1() {
-    return ['#1.1,10,10.75,10',
-        '#2.1,10,11.25,10',
-        '#3.1,10,11.75,10.125',
-        '#4.1,10,11.875,10.125',
-        '#5.1,10,12.375,10',
-        '#6.1,10,12.5,10.125',
-        '#7.1,10,13.5,10',
-        '#8.1,10,10.5,10',
-        '#9.1,10,10.625,10.125',
-        '#10.1,10,10.75,10',
-        '#11.1,10,11,10',
-        '#12.1,10,11.25,10',
-        '#13.1,10,12.5,10.125',
-        '#14.1,10,12.375,10.25',
-        '#15.1,10,13.0,10.25',
-        '#16.1,10,14.5,10.25']
+    return ['#1.1,10,10.75,10,#8EB4E3,triangle,100% Alpaca / 0% Merino Wool',
+        '#2.1,10,11.25,10,#8EB4E3,triangle,90% Alpaca / 10% Merino Wool',
+        '#3.1,10,11.75,10.125,#8EB4E3,triangle,80% Alpaca / 20% Merino Wool',
+        '#4.1,10,11.875,10.125,#8EB4E3,triangle,70% Alpaca / 30% Merino Wool',
+        '#5.1,10,12.375,10,#8EB4E3,triangle,60% Alpaca / 40% Merino Wool',
+        '#6.1,10,12.5,10.125,#8EB4E3,triangle,50% Alpaca / 50% Merino Wool',
+        '#7.1,10,13.5,10,#8EB4E3,triangle,0% Alpaca / 100% Merino Wool',
+        '#8.1,10,10.5,10,#FAC090,triangle,100% Tussah Silk / 0% Cormo Wool',
+        '#9.1,10,10.625,10.125,#FAC090,triangle,90% Tussah Silk / 10% Cormo Wool',
+        '#10.1,10,10.75,10,#FAC090,triangle,80% Tussah Silk / 20% Cormo Wool',
+        '#11.1,10,11,10,#FAC090,triangle,70% Tussah Silk / 30% Cormo Wool',
+        '#12.1,10,11.25,10,#FAC090,triangle,60% Tussah Silk / 40% Cormo Wool',
+        '#13.1,10,12.5,10.125,#FAC090,triangle,50% Tussah Silk / 50% Cormo Wool',
+        '#14.1,10,12.375,10.25,#FAC090,triangle,34% Tussah Silk / 66% Cormo Wool',
+        '#15.1,10,13.0,10.25,#FAC090,triangle,17% Tussah Silk / 83% Cormo Wool',
+        '#16.1,10,14.5,10.25,#FAC090,triangle,0% Tussah Silk / 100% Cormo Wool']
 }
+
 function sampleSet2() {
-    return ['#1.2,10,10.75,10',
-        '#2.2,10,11.0,10.125',
-        '#3.2,10,11.75,10',
-        '#4.2,10,12.125,10',
-        '#5.2,10,11.875,10.125',
-        '#6.2,10,13.25,10.125',
-        '#7.2,10,13.125,10.125',
-        '#8.2,10,10.375,10.125',
-        '#9.2,10,10.5,10',
-        '#10.2,10,10.625,10',
-        '#11.2,10,11,10',
-        '#12.2,10,11.625,10',
-        '#13.2,10,12.5,10',
-        '#14.2,10,12.125,10',
-        '#15.2,10,13.25,10.25',
-        '#16.2,10,14.25,10.25',
-    ]
+    return ['#1.2,10,10.75,10,#17375E,square,100% Alpaca / 0% Merino Wool',
+        '#2.2,10,11.0,10.125,#17375E,square,90% Alpaca / 10% Merino Wool',
+        '#3.2,10,11.75,10,#17375E,square,80% Alpaca / 20% Merino Wool',
+        '#4.2,10,12.125,10,#17375E,square,70% Alpaca / 30% Merino Wool',
+        '#5.2,10,11.875,10.125,#17375E,square,60% Alpaca / 40% Merino Wool',
+        '#6.2,10,13.25,10.125,#17375E,square,50% Alpaca / 50% Merino Wool',
+        '#7.2,10,13.125,10.125,#17375E,square,0% Alpaca / 100% Merino Wool',
+        '#8.2,10,10.375,10.125,#E46C0A,square,100% Tussah Silk / 0% Cormo Wool',
+        '#9.2,10,10.5,10,#E46C0A,square,90% Tussah Silk / 10% Cormo Wool',
+        '#10.2,10,10.625,10,#E46C0A,square,80% Tussah Silk / 20% Cormo Wool',
+        '#11.2,10,11,10,#E46C0A,square,70% Tussah Silk / 30% Cormo Wool',
+        '#12.2,10,11.625,10,#E46C0A,square,60% Tussah Silk / 40% Cormo Wool',
+        '#13.2,10,12.5,10,#E46C0A,square,50% Tussah Silk / 50% Cormo Wool',
+        '#14.2,10,12.125,10,#E46C0A,square,34% Tussah Silk / 66% Cormo Wool',
+        '#15.2,10,13.25,10.25,#E46C0A,square,17% Tussah Silk / 83% Cormo Wool',
+        '#16.2,10,14.25,10.25,#E46C0A,square,0% Tussah Silk / 100% Cormo Wool']
 }
+
 function sampleSet3() {
     return [
         '#1.3,14.0625,15,14.25',
