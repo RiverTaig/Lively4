@@ -9,12 +9,9 @@ function onResize() {
     let canvas = canvasRef();
     let canvasDiv = document.getElementById('canvasDiv');
     let relAbs = document.getElementById('relativeAbsolute');
-    let showHide = document.getElementById('showHide');
     let xaxis = document.getElementById('xAxis');
     let yaxis = document.getElementById('yAxis');
     let loadData = document.getElementById('loadData');
-    let dataTable = document.getElementById('dataTable');
-    let addButton = document.getElementById('addButton');
     let whatIsLiveliness = document.getElementById('whatIsLiveliness');
     let w = canvasDiv.offsetWidth;
     let h = canvasDiv.offsetHeight;
@@ -30,7 +27,6 @@ function onResize() {
     if (window.innerHeight > window.innerWidth || whatIsVisible === false) { //PORTRAIT MODE HIDES CANVAS AND "WHAT IS" 
         canvasDiv.style.visibility = 'hidden';
         relAbs.style.visibility = 'hidden';
-        // showHide.style.visibility = 'hidden';
         xaxis.style.visibility = 'hidden';
         yaxis.style.visibility = 'hidden';
         loadData.style.visibility = 'hidden';
@@ -46,7 +42,6 @@ function onResize() {
         canvasDiv.style.visibility = 'unset';
         canvasDiv.style.visibility = 'unset';
         relAbs.style.visibility = 'unset';
-        // showHide.style.visibility = 'unset';
         xaxis.style.visibility = 'unset';
         yaxis.style.visibility = 'unset';
         loadData.style.visibility = 'unset';
@@ -60,22 +55,17 @@ function onResize() {
 }
 function resizeInstructionsAndCanvas(canvas, h, w) {
     redrawCanvas(canvas);
-    //canvas.height = h < w ? w : h;
-    //canvas.width = canvas.height;
-    let originalCanvasDivWidth = document.getElementById('canvasDiv').width;
     document.getElementById("canvasDiv").style.width = canvas.width + "px";
     let windowWidth = window.innerWidth;
     let percentOccupiedLeftOfGrid = .25 + (parseInt(document.getElementById("canvasDiv").style.width) / windowWidth);
-    let spaceForInstructions = (100 * (.98 - percentOccupiedLeftOfGrid)) - 1;
     let yaxis = document.getElementById("yAxis");
     let xaxis = document.getElementById("xAxis");
-    let loadDataButton = document.getElementById("loadData");
     yaxis.style.top = (canvas.offsetTop + (canvas.height / 1.5) - (1 * yaxis.offsetWidth)) + "px";
     xaxis.style.left = canvas.offsetLeft + (canvas.width / 2) + "px"; //(canvas.offsetLeft + (windowWidth * .1)) + "px";
     xaxis.style.top = (canvas.offsetTop + canvas.height + -(1 * xaxis.offsetHeight)) + "px";
     let rotateWidth = (-.45 * yaxis.offsetWidth) + canvas.offsetLeft;
     yaxis.style.left = rotateWidth + "px";
-    let ctx = DrawResiliancyLine();
+    DrawResiliancyLine();
 
     if (plotHookSet === false) {
         $(".livelyInput").bind('keyup input', function () {
@@ -160,10 +150,7 @@ function Init() {
 
             let data = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, false, elasticLength, 10, resilancyLength, yarnID, color, symbol,8, yarnNotes);
             dataTableReference().row.add([
-                yarnID,
-                svgSymbol,
-                elasticLength,
-                resilancyLength,
+                yarnID,svgSymbol,elasticLength,resilancyLength,
                 "<span class='lively'>" + data.livelyness + "</span>",
                 yarnNotes,
                 "<img width='32px' yarnid='" + yarnID +  "' id='img" + yarnID + "' class='icon-delete' height='32px' src='trash.png'></img>",
@@ -185,10 +172,11 @@ function PlotDataTableOnCanvasUsingRelativeScale(){
     let minX = 9999; let minY = 9999; let maxX = -9999; let maxY = -9999;
     let sl =  10;
     for(let i = 0 ; i < rows.count(); i++){
-        let el =  parseFloat(rows.data()[i][2]);
-        let rl =  parseFloat(rows.data()[i][3]);
-        let yarnNotes = rows.data()[i][5]
-        let absXY = rows.data()[i][7].split(',')
+        let row = rows.data()[i];
+        let el =  parseFloat(row[2]);
+        let rl =  parseFloat(row[3]);
+        let yarnNotes = row[5]
+        let absXY = row[7].split(',')
         let absX = parseFloat(absXY[0]);
         let absY = parseFloat(absXY[1]);
         let percentRangeX = (absX-minMaxXY.minRLAdj) / (minMaxXY.maxRLAdj - minMaxXY.minRLAdj)
@@ -220,6 +208,7 @@ function loadSamples(x) {
         $('#loadDataButton').click();
     }
 }
+
 function adjustElRlImagesOnCanvas(image = "ruler,original,elastic,resiliancy") {
     if (image.indexOf("ruler") > -1) {
         var c = document.getElementById("rulerCanvas");
@@ -263,7 +252,6 @@ function drawImageScaled(img, ctx) {
     var centerShift_x = (canvas.width - img.width * ratio) / 2;
     var centerShift_y = (canvas.height - img.height * ratio) / 2;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     let l = 15.5;
     let adjustLabel = null;
     if (ctx.canvas.id === "originalCanvas") {
@@ -292,38 +280,8 @@ function drawImageScaled(img, ctx) {
     if (adjustLabel !== null) {
         adjustLabel[0].style.marginTop = (-1 * (600 - pixels)) + "px";
     }
-    return;
-
-
-    //The ruler is 7" long and starts at 8.5". The original, being always at 10" is therefore up
-    //1.5". So, 1.5 / 7 = .214. Since the height=600px, the height of the original is
-    // .214*600=129 px
-    if (ctx.canvas.id === "originalCanvas") {
-        ctx.drawImage(img, 0, 0, img.width, img.height * .216, 0, 0, canvas.width, 129)
-
-    }
-    else if (ctx.canvas.id === "rulerCanvas") {
-        ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height)
-    }
-    else if (ctx.canvas.id === "stretchedCanvas") {
-        let el = parseFloat($("#txtElasticLength").val());
-        let len = el - 8.5;
-        let percentOfRuler = len / 7;
-        let pixels = percentOfRuler * 600;
-        ctx.drawImage(img, 0, 0, img.width, img.height * percentOfRuler, 0, 0, canvas.width, pixels)
-    }
-    else if (ctx.canvas.id === "relaxedCanvas") {
-        let l = parseFloat($("#txtResiliancyLength").val());
-        let len = l - 8.5;
-        let percentOfRuler = len / 7;
-        let pixels = percentOfRuler * 600;
-        ctx.drawImage(img, 0, 0, img.width, img.height * percentOfRuler, 0, 0, canvas.width, pixels)
-    }
-    else {
-        ctx.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
-    }
-
 }
+
 var _dataTableReference = null;
 function dataTableReference() {
     if (_dataTableReference === null) {
@@ -344,13 +302,11 @@ function dataTableReference() {
     return _dataTableReference;
 }
 function loadTable() {
-
     let t = dataTableReference();
     $('#example tbody').on('click', 'img.icon-delete', function () {
         let idToRemove = -1;
         let thisYarnId = this.attributes["yarnid"].value;
         for(let i = 0 ; i < dots.length; i++){
-            
             if(dots[i].yarnID === thisYarnId){
                 idToRemove = i;
                 break;
@@ -359,15 +315,15 @@ function loadTable() {
         if(idToRemove != -1){
             dots.splice(idToRemove, 1);
         }
-        t
-            .row($(this).parents('tr'))
+        t.row($(this).parents('tr'))
             .remove()
             .draw();
     });
-    var counter = 1;
+
     $('#example tbody').on('click', 'tr', function () {
         $(this).toggleClass('selected');
     });
+
     $('#loadDataButton').on('click', function () {
         let sampleSets = [sampleSet1(), sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
         let canvas = canvasRef();
@@ -383,12 +339,8 @@ function loadTable() {
                 let notes = data[6];
                 let svgSymbol = getSVGSymbol(color,symbol) ;
                 let {plotPoint,livelyness} = drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false, el, sl, rl, id,color, symbol, 8, notes,id);
-
                 t.row.add([
-                    id,
-                    svgSymbol,
-                    el,
-                    rl,
+                    id,svgSymbol,el,rl,
                     "<span class='lively'>" + livelyness + "</span>",
                     notes,
                     "<img width='32px' yarnId='" + id + "' id='img" + id.replace('#', 'x') + "' class='icon-delete' height='32px' src='trash.png'></img>",
@@ -399,6 +351,7 @@ function loadTable() {
         });
     });
 }
+
 var _canvasRef = null;
 function canvasRef() {
     if (_canvasRef == null) {
@@ -406,6 +359,7 @@ function canvasRef() {
     }
     return _canvasRef;
 }
+
 function getSVGSymbol(color, symbol) {
     let svgSymbol = '<svg height="16" width="16"><circle cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>';
     if (symbol === 'triangle') {
@@ -416,8 +370,8 @@ function getSVGSymbol(color, symbol) {
     }
     return svgSymbol;
 }
-function getMinMaxAbsXY(){
 
+function getMinMaxAbsXY(){
     let dt = dataTableReference();
     let ret = {
         minEL : 999,
@@ -428,7 +382,6 @@ function getMinMaxAbsXY(){
 
     for(let i  = 0; i < dt.rows().count(); i++){
         let plotPoint = dt.table().rows().data()[i][7];
-        
         let el = parseFloat(plotPoint.split(',')[1])
         let rl = parseFloat(plotPoint.split(',')[0])
         ret.minEL = el < ret.minEL ? el : ret.minEL;
@@ -464,7 +417,6 @@ function getPlotPointFromDataPoint(el, rl, sl ) {
         maxRLAdj = parseFloat(maxRL) +  parseFloat(.05 * (maxRL-minRL));
         deltaRL = maxRLAdj-minRLAdj;
     }
-    
     let w = canvasRef().width;
     let elasticityPercent = (el - sl) / sl;
     let resiliancyPercent = (el - rl) / (el - sl); // (rl - sl) / (el-sl)
@@ -473,7 +425,6 @@ function getPlotPointFromDataPoint(el, rl, sl ) {
     let plotPointY = (w * elasticityPercent);
     return { x: plotPointX, y: plotPointY }
 }
-//https://stackoverflow.com/questions/17064913/display-tooltip-in-canvas-graph
 
 function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset', yarnID="-1", relativePlotPoint = null) {
     let outReturnPlotPoint = null; let p = null; let livelyness = -999;
@@ -567,26 +518,13 @@ function calcLivelinessFromPlotPoint(h, plotPoint, w, el) {
 }
 
 function getLivelyness(el, rl, sl, h, w, useRelativeScale) {
-    let plotPoint = null;
-    if (el === -1) {
-        plotPoint = getPlotPoint();
-    }
-    else {
-        plotPoint = getPlotPointFromDataPoint(el, rl, sl, useRelativeScale);
-    }
+
+    let plotPoint = getPlotPointFromDataPoint(el, rl, sl, useRelativeScale);
     let y = Math.abs(h - plotPoint.y);
-    var p = { 
-        x: plotPoint.x,
-        y
-    };
-    let lineFromPoint = {
-        x: 0,
-        y: h,
-    };
-    let lineToPoint = {
-        x: w,
-        y: 0,
-    };
+    var p = { x: plotPoint.x, y  };
+
+    let lineFromPoint = {  x: 0,   y: h };
+    let lineToPoint = {x: w,  y: 0 };
     let outReturnPlotPoint = { x: 0, y: 0 };
     //At this point p is in cartesian space which is what we need for the distance and return calculations
     let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
@@ -610,75 +548,42 @@ function DrawResiliancyLine() {
     return ctx;
 }
 
-function getPlotPoint() {
-    let w = canvasRef().width;
-    let el = document.getElementById('el').value;
-    let rl = document.getElementById('rl').value;
-    let sl = document.getElementById('sl').value;
-    let elasticityPercent = (el - sl) / sl;
-    let resiliancyPercent = (el - rl) / (el - sl);
-    document.getElementById("elasticity").innerText = elasticityPercent;
-    document.getElementById("resiliancy").innerText = resiliancyPercent;
-    
-
-    let plotPointX = w * resiliancyPercent;
-    let plotPointY = (w * elasticityPercent);
-    document.getElementById("plotPoint").innerText = plotPoint.x.toFixed(1) + "," + plotPoint.y.toFixed(1);
-    return { x: plotPointX, y: plotPointY }
-}
-function toggleCanvas() {
-    showingDataTable = !showingDataTable;
-    redrawCanvas();
-}
-var showingDataTable = true;
 counter = 0;
 function redrawCanvas(canvas) {
-    let canvasDiv = document.getElementById('canvasDiv');
     if (!canvas) {
         canvas = canvasRef();
     }
 
     let pixelsToDataTable = window.innerHeight * (.76 - .14);
     let pixelsToInstructions = window.innerWidth * (.57 - .26);
-    let startColForInstructions = 57;
-    if (showingDataTable) {
-        if (pixelsToDataTable < pixelsToInstructions) {
-            $('#myCanvas').css('grid-row', '14/70');
-            canvas.height = pixelsToDataTable;
-            canvas.width = canvas.height
-        }
-        else {
-            let percentWeCanGoDown = pixelsToInstructions / pixelsToDataTable
-            let pixelsToGoDown = percentWeCanGoDown * pixelsToDataTable;
-            let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
-            let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
-            $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
-            canvas.width = pixelsToInstructions;
-            canvas.height = canvas.width
-        }
-
-        $('#myCanvas').css('z-index', '0');
-
-        let canvasPercentAtRightSide = 26 + parseInt(100 * (canvas.width) / window.innerWidth);
-        let showHidePosition = (canvasPercentAtRightSide - 16).toString() + '/' + (canvasPercentAtRightSide).toString()
-        $('#showHide').css('grid-column', showHidePosition);
-        counter++
-        //Now that the canvas has been drawn into position we can draw the instructions.
-        //The assumption for canvas placement is that the instructions were at .57% (which may have
-        //therefore constrained the canvas).  Now that the canvas has been drawn though, the instructions
-        //will actually go just to their left
-        let canvasRightEdgePercentPosition = (canvas.offsetLeft + canvas.width) / window.innerWidth;
-        let instructionPosition = parseInt(2 + (100 * canvasRightEdgePercentPosition)) + "/100"
-        $('#instructions').css('grid-column', instructionPosition);
-        $('#instructionsContentContainer').css('grid-column', instructionPosition);
+    if (pixelsToDataTable < pixelsToInstructions) {
+        $('#myCanvas').css('grid-row', '14/70');
+        canvas.height = pixelsToDataTable;
+        canvas.width = canvas.height
     }
     else {
-        $('#myCanvas').css('grid-row', '14/101');//87%
-        $('#myCanvas').css('grid-column', '26/101');
-        $('#myCanvas').css('z-index', '99');
-        canvas.width = canvas.height;
+        let percentWeCanGoDown = pixelsToInstructions / pixelsToDataTable
+        let pixelsToGoDown = percentWeCanGoDown * pixelsToDataTable;
+        let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
+        let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
+        $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
+        canvas.width = pixelsToInstructions;
+        canvas.height = canvas.width
     }
 
+    $('#myCanvas').css('z-index', '0');
+    let canvasPercentAtRightSide = 26 + parseInt(100 * (canvas.width) / window.innerWidth);
+    let showHidePosition = (canvasPercentAtRightSide - 16).toString() + '/' + (canvasPercentAtRightSide).toString()
+    $('#showHide').css('grid-column', showHidePosition);
+    counter++
+    //Now that the canvas has been drawn into position we can draw the instructions.
+    //The assumption for canvas placement is that the instructions were at .57% (which may have
+    //therefore constrained the canvas).  Now that the canvas has been drawn though, the instructions
+    //will actually go just to their left
+    let canvasRightEdgePercentPosition = (canvas.offsetLeft + canvas.width) / window.innerWidth;
+    let instructionPosition = parseInt(2 + (100 * canvasRightEdgePercentPosition)) + "/100"
+    $('#instructions').css('grid-column', instructionPosition);
+    $('#instructionsContentContainer').css('grid-column', instructionPosition);
 }
 
 function toggleSwitch(subclass, leftAction, rightAction) {
@@ -730,15 +635,13 @@ function distToSegmentSquared(p, v, w, outReturnPoint) {
 function distToSegment(p, v, w, outReturnPoint) {
     let originalAnswer = Math.sqrt(distToSegmentSquared(p, v, w, outReturnPoint));
     let d = getD();
-    let origTimeOneHundred = originalAnswer * 100;
-    let adjustedAnswer = origTimeOneHundred / d;
+    let adjustedAnswer = (originalAnswer * 100) / d;
     return adjustedAnswer;
 }
 function getD() {
     let canvas = canvasRef();
     let width = canvas.width
-    let wSquared = width * width;
-    let twoWSquared = 2 * wSquared;
+    let twoWSquared = 2 * sqr(width);
     let sqrtTwoWSquared = Math.sqrt(twoWSquared);
     let twoWSquaredOverTwo = sqrtTwoWSquared / 2;
     return twoWSquaredOverTwo;
@@ -756,20 +659,14 @@ function drawLine(ctx, x,y, startX=0, startY=0) {
 var dots = [];
 function handleMouseMove(e) {
 
-    if(offsetX === undefined){
-        var graph = canvasRef();
-        var tipCanvas = document.getElementById("tip");
-        var tipCtx = tipCanvas.getContext("2d");
-        var canvasOffset = $('#myCanvas').offset();
-        var {left,top} = canvasOffset;
-        var offsetX = canvasOffset.left;
-        var offsetY = canvasOffset.top;
-    }
-    else{
-        console.log("not undefined");
-    }
-    mouseX = parseInt(e.clientX - offsetX);
-    mouseY = parseInt(e.clientY - offsetY);
+    var graph = canvasRef();
+    var tipCanvas = document.getElementById("tip");
+    var tipCtx = tipCanvas.getContext("2d");
+    var canvasOffset = $('#myCanvas').offset();
+    var {left,top} = canvasOffset;
+
+    mouseX = parseInt(e.clientX - left);
+    mouseY = parseInt(e.clientY - top);
 
     var hit = false;
     for (var i = 0; i < dots.length; i++) {
