@@ -7,8 +7,6 @@
     <script src="index.js"></script>
     <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -19,45 +17,10 @@
         crossorigin="anonymous">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src = "mousewheel.js"></script>
 
-    <style>
-        body {
-            overflow: hidden;
-            background-color: rgb(237, 243, 245);
-        }
-
-        .wrapper {
-            display: grid;
-            /* grid-template-columns: repeat(100, 1fr); */
-            grid-auto-columns: 1%;
-            grid-gap: 0em;
-            grid-auto-rows: 1%;
-            height: 99vh;
-        }
-
-
-        .rotate {
-
-        /* Safari */
-        -webkit-transform: rotate(-90deg);
-
-        /* Firefox */
-        -moz-transform: rotate(-90deg);
-
-        /* IE */
-        -ms-transform: rotate(-90deg);
-
-        /* Opera */
-        -o-transform: rotate(-90deg);
-
-        float: left;
-
-        }
-    </style>
       <script>
             $(function() {
                $( "#txtResiliancyLength" ).spinner({
@@ -102,22 +65,7 @@
 
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
                                 More...</button>
-                                <div><br><br>
-                                    <!-- H: <input type="text" id="hTest"><br>
-                                    W: <input type="text" id="wTest"><br> -->
-                                    <!-- EL: <input type="text" id="elTest" value="12"><br>
-                                    RL: <input type="text" id="rlTest" value="11"><br>  
-
-                                    MIN E: <input type="text" id="eMin" value="10.2"><BR>
-                                    MAX E: <input type="text" id="eMax" value="15"><BR>
-                                    MIN R: <input type="text" id="rMin" value="10"><BR>
-                                    MAX R: <input type="text" id="rMax" value="14"><BR> 
-                                    Erase? <input type="checkbox" checked id="eraseTest">  <bR>                                          -->
-                                    <button type="button" class="btn btn-info" onclick="Test()" > 
-                                            Test</button>
-                                </div>
                         </div>
-
 
                         <div id="sampleEntry" style="visibility:collapse">
                             <br>
@@ -149,55 +97,31 @@
                             <button id="btnRun" onclick=runSample()>RUN</button>
                             commit 4
                         </div>
-
-
-
-
-
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="relativeAbsolute">
-            <div>
-                <div style="line-height:24px">
-                    <SPAN class="toggleLabel relative">REL</SPAN>
-                    <label class="switch">
-                        <input onclick=toggleSwitch('relative') id="yyy" type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                    <SPAN class="toggleLabel relative on">ABS</SPAN>
-                    <div>
+                <div>
+                    <div style="line-height:24px">
+                        <SPAN class="toggleLabel relative left">REL</SPAN>
+                        <label class="switch">
+                            <input onclick=toggleSwitch('relative',drawRel,drawAbs) id="yyy" type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <SPAN class="toggleLabel relative on right">ABS</SPAN>
+                        <div>
+                        </div>
                     </div>
+    
                 </div>
-
+    
             </div>
-
-        </div>
-        <div id="showHide" class="expanded">
-            <div>
-                <div style="line-height:24px">
-                    <SPAN class="toggleLabel show left">BIG</SPAN>
-                    <label class="switch">
-                        <input onclick=toggleSwitch("show",toggleCanvas) id="xxx" type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                    <SPAN class="toggleLabel show on right">SMALL</SPAN>
-                    <div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
         <div id="canvasDiv">
-                <!-- <div id="wrapper2"> -->
             <canvas id="myCanvas">
             </canvas>
-            <canvas id="tip" width=100 height=25></canvas>
-                <!-- </div> -->
-            <!--position: absolute;top:0px;right:0px;background-color:#cccccccc;width:100%;height:100px;margin-top:10vh;margin-right: 3vw;-->
-
+            <canvas id="tip" width=150 height=50></canvas>
         </div>
         <div id="instructions">
             <div id="instructionsDiv">

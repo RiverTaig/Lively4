@@ -30,7 +30,7 @@ function onResize() {
     if (window.innerHeight > window.innerWidth || whatIsVisible === false) { //PORTRAIT MODE HIDES CANVAS AND "WHAT IS" 
         canvasDiv.style.visibility = 'hidden';
         relAbs.style.visibility = 'hidden';
-        showHide.style.visibility = 'hidden';
+        // showHide.style.visibility = 'hidden';
         xaxis.style.visibility = 'hidden';
         yaxis.style.visibility = 'hidden';
         loadData.style.visibility = 'hidden';
@@ -46,7 +46,7 @@ function onResize() {
         canvasDiv.style.visibility = 'unset';
         canvasDiv.style.visibility = 'unset';
         relAbs.style.visibility = 'unset';
-        showHide.style.visibility = 'unset';
+        // showHide.style.visibility = 'unset';
         xaxis.style.visibility = 'unset';
         yaxis.style.visibility = 'unset';
         loadData.style.visibility = 'unset';
@@ -67,7 +67,6 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
     let windowWidth = window.innerWidth;
     let percentOccupiedLeftOfGrid = .25 + (parseInt(document.getElementById("canvasDiv").style.width) / windowWidth);
     let spaceForInstructions = (100 * (.98 - percentOccupiedLeftOfGrid)) - 1;
-
     let yaxis = document.getElementById("yAxis");
     let xaxis = document.getElementById("xAxis");
     let loadDataButton = document.getElementById("loadData");
@@ -78,9 +77,7 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
     yaxis.style.left = rotateWidth + "px";
     let ctx = DrawResiliancyLine();
 
-
     if (plotHookSet === false) {
-        //var elementsArray = document.querySelectorAll('.livelyInput');
         $(".livelyInput").bind('keyup input', function () {
             let canvas = canvasRef();
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
@@ -91,67 +88,13 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
         };
     }
-
-    /*tooltips*/
-    // var graph = canvasRef();
-    // var ctx = graph.getContext("2d");
-    // var tipCanvas = document.getElementById("tip");
-    // var tipCtx = tipCanvas.getContext("2d");
-
-    // var canvasOffset = $("#graph").offset();
-    // var offsetX = canvasOffset.left;
-    // var offsetY = canvasOffset.top;
-
-    // var graph;
-    // var xPadding = 30;
-    // var yPadding = 30;
-  
-
-
     canvas.onmousemove = function (e) {
         try{
-            
             handleMouseMove(e);
         }
         catch(ex){
-            console.log(ex);
+            console.log("ERROR " + ex);
         }
-        
-        //return;
-        let x = e.layerX;
-        document.getElementById("x").innerText = x;
-        let h = document.getElementById("myCanvas").height;
-        let w = document.getElementById("myCanvas").width;
-        let y = Math.abs(h - e.layerY);
-        document.getElementById("y").innerText = y;
-        var p = {
-            x,
-            y
-        };
-        let lineFromPoint = {
-            x: 0,
-            y: h,
-        };
-        let lineToPoint = {
-            x: w,
-            y: 0,
-        };
-        let outReturnPoint = { x: 0, y: 0 };
-        let d = distToSegment(p, lineFromPoint, lineToPoint, outReturnPoint);
-        document.getElementById("distance").innerText = d; //distToSegment(p, lineFromPoint, lineToPoint, outReturnPoint);
-        document.getElementById("returnPoint").innerText = Math.round(outReturnPoint.x) + "," + Math.round(outReturnPoint.y);
-        document.getElementById("w").innerText = w;
-        let plusOrMinus = 1;
-        if (outReturnPoint.x >= x) {
-            document.getElementById("plusOrMinus").innerText = "NEGATIVE";
-            plusOrMinus = -1;
-        }
-        else {
-            document.getElementById("plusOrMinus").innerText = "POSITIVE";
-        }
-        let livelyness =  (plusOrMinus * d).toFixed(2);;
-        document.getElementById("liveliness").innerText =liveliness
-        console.log(   "(" + x + "," + y + ") : " + livelyness);
     };
 }
 
@@ -166,7 +109,6 @@ function Init() {
     $('input[type=radio][name=colorRadios]').change(function () {
         $('.yarnSymbol').each((index, element) => {
             color = this.value;
-            console.log('color: ' + color);
             element.setAttribute("fill", color);
         })
 
@@ -196,7 +138,6 @@ function Init() {
             let resilancyLength = parseFloat($("#txtResiliancyLength").val())
             let color = document.querySelector('input[name="colorRadios"]:checked').value;
             let symbol = document.querySelector('input[name="symbolRadios"]:checked').value;
-
             let error = false;
             if ([yarnID, yarnNotes, elasticLength, resilancyLength].some((el) => el === '')) {
                 alert("Please fill in all values");
@@ -215,49 +156,37 @@ function Init() {
                 return false;
             }
             yarnIds[yarnID] = 1
-            let svgSymbol =  '<svg height="16" width="16"><circle cx="8" cy="8" r="8"  fill="' + color + '" />xx</svg>'
-            if(symbol === 'triangle'){
+            let svgSymbol = getSVGSymbol(color,symbol);
 
-                svgSymbol = '<svg height="16" width="16"><polygon  points="8,0 16,16 0,16"  fill="' + color + '" />xx</svg>'
-            }
-            if(symbol === 'square'){
-                svgSymbol = '<svg height="16" width="16"><polygon points="0,0 0,16 16,16 16,0"  fill="' + color + '"  /></svg>'
-            }
-            //h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset' ) {
-            //TODO adjust for new return type
-            let lively = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, false, elasticLength, 10, resilancyLength, yarnID, color, symbol,8, yarnNotes);
+            let data = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, false, elasticLength, 10, resilancyLength, yarnID, color, symbol,8, yarnNotes);
             dataTableReference().row.add([
                 yarnID,
                 svgSymbol,
                 elasticLength,
                 resilancyLength,
-                "<span class='lively'>" + lively + "</span>",
+                "<span class='lively'>" + data.livelyness + "</span>",
                 yarnNotes,
-                "<img width='32px' yarnid='" + yarnID +  "' id='img" + yarnID + "' class='icon-delete' height='32px' src='trash.png'></img>"
+                "<img width='32px' yarnid='" + yarnID +  "' id='img" + yarnID + "' class='icon-delete' height='32px' src='trash.png'></img>",
+                data.plotPoint.x.toString() + "," + data.plotPoint.y.toString()
             ]).draw(false);
         }
         catch (ex) {
-            debugger;
             console.log("ERROR " + ex.toString())
         }
     });
 }
-function Test(){
-    PlotDataTableOnCanvasUsingRelativeScale();
-}
+
 function PlotDataTableOnCanvasUsingRelativeScale(){
     let minMaxXY = getMinMaxAbsXY()
-     
-    let erase = false;// document.getElementById("eraseTest").checked;
-    let yarnId = Math.random();
+    let erase = false;
     useRelative = true
     let rows = dataTableReference().table().rows();
     let w = parseFloat(canvasRef().width);
     let minX = 9999; let minY = 9999; let maxX = -9999; let maxY = -9999;
+    let sl =  10;
     for(let i = 0 ; i < rows.count(); i++){
         let el =  parseFloat(rows.data()[i][2]);
         let rl =  parseFloat(rows.data()[i][3]);
-        let sl =  10;
         let yarnNotes = rows.data()[i][5]
         let absXY = rows.data()[i][7].split(',')
         let absX = parseFloat(absXY[0]);
@@ -266,24 +195,10 @@ function PlotDataTableOnCanvasUsingRelativeScale(){
         let newX = w * percentRangeX;
         let percentRangeY = (absY-minMaxXY.minELAdj) / (minMaxXY.maxELAdj - minMaxXY.minELAdj)
         let newY = w * percentRangeY;
-        if(newX < minX){
-            minX = newX
-        }
-        if(newX > maxX){
-            maxX = newX
-        }
-        if(newY < minY){
-            minY = newY
-        }
-        if(newY > maxY){
-            maxY = newY
-        }
         let rp = {x:newX, y: newY}
         drawPlotPointAndCalculateLiveliness(w,w,erase,el,sl,rl,i.toString(),'blue', 'circle',8,yarnNotes,i.toString(),rp)
         erase = false;
     }
-    debugger
-    
 }
 function loadSamples(x) {
     let sampleButton = document.getElementById('imgSample')
@@ -527,9 +442,6 @@ function getMinMaxAbsXY(){
     ret.minRLAdj = ret.minRL - (.05*deltaX)
     ret.maxELAdj = ret.maxEL + (.05*deltaY)
     ret.maxRLAdj = ret.maxRL + (.05*deltaX)
-    
-    
-    //debugger
     return ret
 }
 var useRelative = false;
@@ -537,13 +449,10 @@ function getPlotPointFromDataPoint(el, rl, sl ) {
     el = parseFloat(el);
     rl = parseFloat(rl);
     sl = parseFloat(sl);
-    //debugger;
     let minELAdj =1;
     let maxELAdj = 1;
-    let deltaEL = 1;
     let minRLAdj = 1;
     let maxRLAdj = 1; 
-    let deltaRL = 1;
     if(useRelative){
         //EL
         let {minEL,maxEL, minRL, maxRL} = getMinMaxAbsXY();
@@ -559,16 +468,7 @@ function getPlotPointFromDataPoint(el, rl, sl ) {
     let w = canvasRef().width;
     let elasticityPercent = (el - sl) / sl;
     let resiliancyPercent = (el - rl) / (el - sl); // (rl - sl) / (el-sl)
-    //
-    //  sl=10       el=15     rl=14    RPer=1/5=.2     4/5=.8
-    //
-    if(useRelative){
-        //elasticityPercent = //(el-minELAdj) / deltaEL;  
-        
-        //resiliancyPercent = //(el - minRLAdj) / (el - sl);                    //1 - ((rl-minRLAdj) / deltaRL);  
-    }
 
-    console.log(`GPP:  ${resiliancyPercent},${elasticityPercent}`)
     let plotPointX = w * resiliancyPercent;
     let plotPointY = (w * elasticityPercent);
     return { x: plotPointX, y: plotPointY }
@@ -631,10 +531,8 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
     }
     ctx.font = "10px Arial";
     ctx.fillStyle = "#000000";
-    ctx.fillText(sample, p.x + 9, p.y);
-
-    ctx.fillText(livelyness, p.x + 9, p.y + 12);
-    //TODO push into table to ensure uniqueness
+    ctx.fillText(sample, p.x + 12, p.y);
+    ctx.fillText(livelyness, p.x + 12, p.y + 12);
     let plotPoint = p
     return  {plotPoint, livelyness }
 }
@@ -735,7 +633,6 @@ function toggleCanvas() {
 var showingDataTable = true;
 counter = 0;
 function redrawCanvas(canvas) {
-    //console.log("****  REDRAW CANVAS ****")
     let canvasDiv = document.getElementById('canvasDiv');
     if (!canvas) {
         canvas = canvasRef();
@@ -743,11 +640,9 @@ function redrawCanvas(canvas) {
 
     let pixelsToDataTable = window.innerHeight * (.76 - .14);
     let pixelsToInstructions = window.innerWidth * (.57 - .26);
-    //console.log("pixelsToDT | pixelsToInstructions: " + pixelsToDataTable.toString() + "|" + pixelsToInstructions.toString())
     let startColForInstructions = 57;
     if (showingDataTable) {
         if (pixelsToDataTable < pixelsToInstructions) {
-            //console.log("We can go all the way down to 70");
             $('#myCanvas').css('grid-row', '14/70');
             canvas.height = pixelsToDataTable;
             canvas.width = canvas.height
@@ -757,12 +652,10 @@ function redrawCanvas(canvas) {
             let pixelsToGoDown = percentWeCanGoDown * pixelsToDataTable;
             let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
             let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
-            //console.log("Going down to " + endPercent);
             $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
             canvas.width = pixelsToInstructions;
             canvas.height = canvas.width
         }
-        //console.log("Canvas Width|Height: " + counter + "| " +  canvas.width + "|" + canvas.height);
 
         $('#myCanvas').css('z-index', '0');
 
@@ -774,11 +667,8 @@ function redrawCanvas(canvas) {
         //The assumption for canvas placement is that the instructions were at .57% (which may have
         //therefore constrained the canvas).  Now that the canvas has been drawn though, the instructions
         //will actually go just to their left
-        console.log("instructions setting to: ")
         let canvasRightEdgePercentPosition = (canvas.offsetLeft + canvas.width) / window.innerWidth;
-        console.log("instructions setting to: " + canvasRightEdgePercentPosition)
         let instructionPosition = parseInt(2 + (100 * canvasRightEdgePercentPosition)) + "/100"
-        console.log("instructions setting to: " + instructionPosition)
         $('#instructions').css('grid-column', instructionPosition);
         $('#instructionsContentContainer').css('grid-column', instructionPosition);
     }
@@ -786,33 +676,37 @@ function redrawCanvas(canvas) {
         $('#myCanvas').css('grid-row', '14/101');//87%
         $('#myCanvas').css('grid-column', '26/101');
         $('#myCanvas').css('z-index', '99');
-        //canvas.height = "87%"
         canvas.width = canvas.height;
     }
 
 }
 
 function toggleSwitch(subclass, leftAction, rightAction) {
-
     var x = document.getElementsByClassName("toggleLabel");
     let xx = Array.prototype.filter.call(x, item => item.classList.contains(subclass));
     for (var i = 0; i < xx.length; i++) {
-        if (xx[i].classList.contains("on")) {
-            xx[i].classList.remove("on")
+        let cl = xx[i].classList;
+        if (cl.contains("on")) {
+            cl.remove("on")
         }
         else {
-            xx[i].classList.add("on")
-            if (xx[i].classList.contains('left')) {
-                //toggleCanvas(true);
+            cl.add("on")
+            if (cl.contains('left')) {
+                leftAction();
             }
-            else {
-                //toggleCanvas(false);
+            else{
+                rightAction()
             }
         }
     }
-    leftAction();
 }
 
+function drawRel(){
+    PlotDataTableOnCanvasUsingRelativeScale();
+}
+function drawAbs(){
+    console.log("Drawing abs")
+}
 
 function sqr(x) {
     return x * x
@@ -834,7 +728,6 @@ function distToSegmentSquared(p, v, w, outReturnPoint) {
 }
 
 function distToSegment(p, v, w, outReturnPoint) {
-
     let originalAnswer = Math.sqrt(distToSegmentSquared(p, v, w, outReturnPoint));
     let d = getD();
     let origTimeOneHundred = originalAnswer * 100;
@@ -850,42 +743,69 @@ function getD() {
     let twoWSquaredOverTwo = sqrtTwoWSquared / 2;
     return twoWSquaredOverTwo;
 }
-function drawLine(ctx, w, h) {
+function drawLine(ctx, x,y, startX=0, startY=0) {
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(w, h);
+    ctx.moveTo(startX,startY);
+    ctx.lineTo(x,y);
     ctx.lineWidth = 2;
     ctx.strokeStyle = "#000000"
     ctx.stroke();
 }
 
-function getCanvas() {
-    let canvas = canvasRef();
-    let ctx = canvas.getContext('2d');
-    return { ctx, canvas };
-}
+// show tooltip when mouse hovers over dot
+var dots = [];
+function handleMouseMove(e) {
 
-function runSample() {
-    let sampleSets = [sampleSet1(), sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
-    let htmlString = ""
-    sampleSets.forEach(sampleSet => {
-        let canvas = canvasRef();
-        for (let i = 0; i < sampleSet.length; i++) {
-            let data = sampleSet[i].split(',');
-            let sampleId = data[0];
-            document.getElementById("sampleId").value = data[0];
-            document.getElementById("sl").value = data[1];
-            document.getElementById("el").value = data[2];
-            document.getElementById("rl").value = data[3];
+    if(offsetX === undefined){
+        var graph = canvasRef();
+        var tipCanvas = document.getElementById("tip");
+        var tipCtx = tipCanvas.getContext("2d");
+        var canvasOffset = $('#myCanvas').offset();
+        var {left,top} = canvasOffset;
+        var offsetX = canvasOffset.left;
+        var offsetY = canvasOffset.top;
+    }
+    else{
+        console.log("not undefined");
+    }
+    mouseX = parseInt(e.clientX - offsetX);
+    mouseY = parseInt(e.clientY - offsetY);
 
-            drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height, false);
-            htmlString += "<br> " + (sampleId + "," + document.getElementById("livelinessEntered").innerText);
-
+    var hit = false;
+    for (var i = 0; i < dots.length; i++) {
+        var dot = dots[i];
+        var dx = mouseX - dot.x;
+        var dy = mouseY - dot.y;
+        if (dx * dx + dy * dy < dot.rXr) {
+            let {x,y} =  graph.getClientRects()[0]
+            tipCanvas.style.left = (x + dot.x) + "px";
+            tipCanvas.style.top = (y + dot.y - 40) + "px";
+            tipCtx.clearRect(0, 0, tipCanvas.width, tipCanvas.height);
+            tipCtx.fillText(dot.tip, 5, 15);
+            hit = true;
         }
-    });
+    }
+    if (!hit) {
+        tipCanvas.style.left = "-200px";
+    }
+}
+/* ********************************************************************** */
 
-    document.getElementById("output").innerHTML = htmlString;
-}//'#1.1,10,10.75,10'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function sampleSet1() {
     return ['#1.1,10,10.75,10,#8EB4E3,triangle,100% Alpaca / 0% Merino Wool',
@@ -1001,111 +921,3 @@ function sampleSet6() {
         '#15.6,15.984375,25,17.5',
         '#16.6,16,26.25,16.5']
 }
-var dots = [];
-
-function initToolTip(){
-    var graph = canvasRef();
-    var ctx = graph.getContext("2d");
-    var tipCanvas = document.getElementById("tip");
-    var tipCtx = tipCanvas.getContext("2d");
-    
-    var canvasOffset = $("#graph").offset();
-    var offsetX = canvasOffset.left;
-    var offsetY = canvasOffset.top;
-    
-    var graph;
-    var xPadding = 30;
-    var yPadding = 30;    
-}
-// show tooltip when mouse hovers over dot
-function handleMouseMove(e) {
-
-    if(offsetX === undefined){
-        var graph = canvasRef();
-        var ctx = graph.getContext("2d");
-        var tipCanvas = document.getElementById("tip");
-        var tipCtx = tipCanvas.getContext("2d");
-        
-        var canvasOffset = $('#myCanvas').offset();
-        var offsetX = canvasOffset.left;
-        var offsetY = canvasOffset.top;
-        
-        var graph;
-        var xPadding = 30;
-        var yPadding = 30;  
-    }
-    mouseX = parseInt(e.clientX - offsetX);
-    mouseY = parseInt(e.clientY - offsetY);
-
-    // Put your mousemove stuff here
-    var hit = false;
-    for (var i = 0; i < dots.length; i++) {
-        var dot = dots[i];
-        var dx = mouseX - dot.x;
-        var dy = mouseY - dot.y;
-        if (dx * dx + dy * dy < dot.rXr) {
-            //debugger;
-            let xOff = graph.getClientRects()[0].x
-            let yOff = graph.getClientRects()[0].y
-            tipCanvas.style.left = (xOff + dot.x) + "px";
-            tipCanvas.style.top = (yOff + dot.y - 40) + "px";
-            tipCtx.clearRect(0, 0, tipCanvas.width, tipCanvas.height);
-            //                  tipCtx.rect(0,0,tipCanvas.width,tipCanvas.height);
-            tipCtx.fillText(dot.tip, 5, 15);
-            hit = true;
-        }
-    }
-    if (!hit) {
-        tipCanvas.style.left = "-200px";
-    }
-}
-
-
-// unchanged code follows
-
-// Returns the max Y value in our data list
-function getMaxY() {
-    var max = 0;
-
-    for (var i = 0; i < data.values.length; i++) {
-        if (data.values[i].Y > max) {
-            max = data.values[i].Y;
-        }
-    }
-
-    max += 10 - max % 10;
-    return max;
-}
-
-// Returns the max X value in our data list
-function getMaxX() {
-    var max = 0;
-
-    for (var i = 0; i < data.values.length; i++) {
-        if (data.values[i].X > max) {
-            max = data.values[i].X;
-        }
-    }
-
-    // omited
-    //max += 10 - max % 10;
-    return max;
-}
-
-// Return the x pixel for a graph point
-function getXPixel(val) {
-    // uses the getMaxX() function
-    return ((graph.width - xPadding) / (getMaxX() + 1)) * val + (xPadding * 1.5);
-    // was
-    //return ((graph.width - xPadding) / getMaxX()) * val + (xPadding * 1.5);
-}
-
-// Return the y pixel for a graph point
-function getYPixel(val) {
-    return graph.height - (((graph.height - yPadding) / getMaxY()) * val) - yPadding;
-}
-
-
-
-
-// #1.1,10,10.75,10   sampleID,SL,EL,RL,COLOR,SYMBOL,NOTE
