@@ -330,7 +330,7 @@ function dataTableReference() {
         _dataTableReference = $('#example').DataTable({
             "scrollY": "20vh",
             "columns": [
-                { "width": "80px" }, null, null, null, null, null, null, { visible: true }
+                { "width": "80px" }, null, null, null, null, null, null, { visible: false }
             ],
             "searching": false,
             "scrollCollapse": true,
