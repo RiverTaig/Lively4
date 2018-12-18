@@ -74,10 +74,6 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
             drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
         });
         plotHookSet = true;
-        document.getElementById("btnPlot").onclick = () => {
-            let canvas = canvasRef();
-            drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
-        };
     }
 
     canvas.onmousemove = function (e) {
@@ -465,6 +461,7 @@ function getPlotPointFromDataPoint(el, rl, sl ) {
 }
 
 function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -1, rl = -1, sample = '', color = 'magenta', symbol = 'circle',size=4,yarnNotes='unset', yarnID="-1", relativePlotPoint = null) {
+    size=6;
     let outReturnPlotPoint = null; let p = null; let livelyness = -999;
     if(relativePlotPoint === null)    {
         // outReturnPlotPoint is the point on the line of zero liveliness, and p is plot point for the sample
