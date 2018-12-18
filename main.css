@@ -401,3 +401,25 @@ h1 {
     top:100px;
     z-index: 999999;
 }
+figure {
+    display: inline-block;
+    /* border: 1px dotted gray; */
+    margin: 5px; /* adjust as needed */
+}
+figure img {
+    vertical-align: top;
+}
+li img {
+    border: 3px solid #80808096;
+    border-radius: 2px;
+}
+
+figure figcaption {
+    /* border: 1px dotted blue; */
+    text-align: center;
+    font-style: italic;
+    margin-top: -10px;
+    margin-left: -15vw;
+    font-weight: 600;
+    color: #066fcc;
+}

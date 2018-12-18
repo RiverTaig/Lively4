@@ -18,29 +18,29 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <script src = "mousewheel.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="mousewheel.js"></script>
 
-      <script>
-            $(function() {
-               $( "#txtResiliancyLength" ).spinner({
-                  step:.1,
-                  min:10,
-                  max:15,
-                  spin: function( event, ui ) {
+    <script>
+        $(function () {
+            $("#txtResiliancyLength").spinner({
+                step: .1,
+                min: 10,
+                max: 15,
+                spin: function (event, ui) {
                     adjustElRlImagesOnCanvas('resiliancy');
-                  }
-               });
-               $( "#txtElasticLength" ).spinner({
-                  step:.1,
-                  min:10,
-                  max:15,
-                  spin: function( event, ui ) {
-                    adjustElRlImagesOnCanvas('elastic');
-                  }
-               });
+                }
             });
-         </script>
+            $("#txtElasticLength").spinner({
+                step: .1,
+                min: 10,
+                max: 15,
+                spin: function (event, ui) {
+                    adjustElRlImagesOnCanvas('elastic');
+                }
+            });
+        });
+    </script>
 </head>
 
 <body style="position: relative;" onresize="onResize()">
@@ -61,7 +61,17 @@
                     <h3 class="section">What is Liveliness ?</h3>
                     <div class="textIndent">
                         <div id="sampleEntry" style="visibility:unset">
-                                Today’s handspinners have a handful of useful terms to describe and document their handspun yarns. Twists per inch (TPI), angle of twist (AOT), and wraps per inch (WPI) are now fairly well understood by all levels of handspinners. Although elasticity and resiliency are part of the common lexicon, elasticity is only used in the general sense, and resiliency appears rarely in descriptive terms about handspun yarns. Nevertheless, elasticity and resiliency are important factors in determining and predicting the behaviour of the ultimate application, namely knitted and woven garments. This study focuses on a quantitative analysis of the elasticity and resiliency of yarns where the constituent fibres are non-elastic blended with elastic fibres. Finally, the study presents a new quantitative method of describing handspun yarns in combined terms of elasticity and resiliency: liveliness.<br><br>
+                            Today’s handspinners have a handful of useful terms to describe and document their handspun
+                            yarns. Twists per inch (TPI), angle of twist (AOT), and wraps per inch (WPI) are now fairly
+                            well understood by all levels of handspinners. Although elasticity and resiliency are part
+                            of the common lexicon, elasticity is only used in the general sense, and resiliency appears
+                            rarely in descriptive terms about handspun yarns. Nevertheless, elasticity and resiliency
+                            are important factors in determining and predicting the behaviour of the ultimate
+                            application, namely knitted and woven garments. This study focuses on a quantitative
+                            analysis of the elasticity and resiliency of yarns where the constituent fibres are
+                            non-elastic blended with elastic fibres. Finally, the study presents a new quantitative
+                            method of describing handspun yarns in combined terms of elasticity and resiliency:
+                            liveliness.<br><br>
 
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Learn
                                 More...</button>
@@ -103,21 +113,21 @@
         </div>
 
         <div id="relativeAbsolute">
-                <div>
-                    <div style="line-height:24px">
-                        <SPAN class="toggleLabel relative left">REL</SPAN>
-                        <label class="switch">
-                            <input onclick=toggleSwitch('relative',drawRel,drawAbs) id="yyy" type="checkbox" checked>
-                            <span class="slider round"></span>
-                        </label>
-                        <SPAN class="toggleLabel relative on right">ABS</SPAN>
-                        <div>
-                        </div>
+            <div>
+                <div style="line-height:24px">
+                    <SPAN class="toggleLabel relative left">REL</SPAN>
+                    <label class="switch">
+                        <input onclick=toggleSwitch('relative',drawRel,drawAbs) id="yyy" type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <SPAN class="toggleLabel relative on right">ABS</SPAN>
+                    <div>
                     </div>
-    
                 </div>
-    
+
             </div>
+
+        </div>
         <div id="canvasDiv">
             <canvas id="myCanvas">
             </canvas>
@@ -138,118 +148,56 @@
                 <div>
                     <ol>
                         <li>Lay a 24” piece of test yarn over a ruler or yardstick.</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. <img height="200px" width="250px" class="image-left" align="left" src="data:image/jpeg;base64,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">
-                            <!-- <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption> -->
+                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to distort or
+                            extend the fibers.
+                            <figure>
+                                <img src="img1Ruler.png" style="width:23vw;height:8vw;margin:20px">
+                                <figcaption>Fig 1 - Relaxed yarn</figcaption>
+                            </figure>
                         </li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. </li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers.<img height="200px" width="250px" class="image-right" align="right" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLVUUwlCFnSygS8ZO4c2yxAV3Bltwi0TsJbyiwmv4akCxSV38I"></li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. <img class="image-left" height="200px" width="250px" align="left" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUjwcjYjAGfEMLA81-g8PR0peKpX9OS49EcKUrWmhpy9KGQ46eWA">]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to
-                            distort
-                            or
-                            extend
-                            the fibers. [IMAGE]</li>
-                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area
-                            is
-                            10”
-                            in
+                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area is 10” in
                             length.
-                            Image</li>
-                        <li>Stretch the length of yarn as far as it will stretch, but no further. This is
-                            the
-                            elasticity or
-                            elastic
-                            length of the yarn. Percentage of the original length (10”).
+                            <figure>
+                                <img src="10InchRuler.jpg" style="width:23vw;height:8vw;margin:15px">
+                                <figcaption>Fig.2 - 10" test length.</figcaption>
+                            </figure>
+                        </li>
+                        <li>Stretch the length of yarn as far as it will stretch, but no further. This is the
+                            elasticity or elastic length of the yarn. Percentage of the original length (10”).
                             This is the yield strength point of the stress/strain curve.
-                            image</li>
-                        <li>Take note of the length.</li>
+                            <figure>
+                                <img src="StretchedRuler.png" style="width:23vw;height:8vw;margin:15px">
+                                <figcaption>Fig.3 - The elastic length is 12.25".</figcaption>
+                            </figure>
+                        </li>
+                        <li>Take note of the length in decimal inches.</li>
                         <li>Hold the yarn for 1 min.</li>
-                        <li>WITHOUT letting go of the yarn, move your hands together allowing the yarn to
-                            relax.
-                            image</li>
+                        <li>WITHOUT letting go of the yarn, move your hands together allowing the yarn to relax.
+                            <figure>
+                            <img src="RelaxedRuler.png" style="width:23vw;height:8vw;margin:15px">
+                            <figcaption>Fig. 4 - Yarn at rest for 1 min</figcaption>
+                        </figure>                            
+                        </li>
                         <li>Allow the yarn to relax for 1 min.</li>
-                        <li>Stretch the yarn as in Step 2. The yarn should be straight, but relaxed. This
-                            is
-                            the
-                            resiliency
-                            or
-                            resilient length of the yarn. Percentage of the elastic length recovered.
-                            image</li>
-                        <li>Take note of the length.</li>
-                        <li>Enter the elasticity and resiliency above.END</li>
+                        <li>Stretch the yarn as in Step 2. The yarn should be straight, but relaxed. This is the
+                            resiliency or resilient length of the yarn. Percentage of the elastic length recovered.
+                            <figure>
+                            <img src="RLRuler.jpg" style="width:23vw;height:8vw;margin:15px">
+                            <figcaption>Fig. 5 - The resiliant length is 10.25"</figcaption>
+                        </figure>   
+                        <li>Take note of the length in decimal inches.</li>
+
+                        <li>Enter the elasticity and resiliency above.</li>
+
                     </ol>
+                    <br><br><br>
                 </div>
             </div>
         </div>
         <div id="addButton">
             <img id="imgAdd" src="add.png" data-toggle="modal" data-target="#addNewYarnModal" width="32px" height="32px">
-            <img id="imgSample" title="add/remove sample data from the table and plot areas." onclick="loadSamples()" src="removeSample.png" width="32px" height="32px">
+            <img id="imgSample" title="add/remove sample data from the table and plot areas." onclick="loadSamples()"
+                src="removeSample.png" width="32px" height="32px">
         </div>
         <div id="dataTable">
             <table id="example" class="display" style="width:100%">
@@ -267,7 +215,7 @@
                 </thead>
             </table>
         </div>
-          <div id="loadData" purpose="load sample data button">
+        <div id="loadData" purpose="load sample data button">
             <div style="height: 0px;">
                 <div><button id="loadDataButton" type="button" class="btn btn-success xinvisible" data-toggle="modal"
                         "       >
@@ -281,11 +229,7 @@
         window.onload = () => {
             Init();
             loadTable();
-            $("#loadDataButton").click(); 
-        } 
-    </script> 
-    </body> 
-    <div class="modal fade" id="exampleModal"
+            $("#loadDataButton").click(); } </script> </body> <div class="modal fade" id="exampleModal"
                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -296,14 +240,86 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                        Today’s handspinner is acutely aware of integral qualities of fibre which allow them to describe and ultimately predict the behaviour of their finished yarns. Terms such as angle of twist (AOT), twists per inch (TPI), and wraps per inch (WPI) are common attributes that appear in many of the trade journals available today. PLY and SpinOff being two of the most popular. Each of these can be discretely measured by the handspinner and used in explicative terms to describe the yarn itself, and in comparative terms when comparing disparate yarns or yarns of the same fibre, but spun at different <img style="float: left;
-                                        margin: 10px;" src="LearnMore1.jpg"> times as part of a larger project. Angle of twist (AOT) refers to the angle at which the plies appear relative to the axial length of sample yarn. In general, the greater the angle, the less soft the yarn will be, or more dense and hard. Twists per inch (TPI) refers to the number of rotations of the yarn (whether clockwise or counter clockwise) in a unit of measure, in this case, one inch. The more TPI, the higher the AOT, and consequently, the less soft the yarn will be . Wraps per inch (WPI) refers to the thickness or diameter of the yarn as it is laid side by side within a unit of measure, in this case, again, one inch.  In general, the more WPI, the finer the yarn. Each of these can easily be measured with simple tools by the handspinner.<br><br>
+                                    Today’s handspinner is acutely aware of integral qualities of fibre which allow
+                                    them to describe and ultimately predict the behaviour of their finished yarns.
+                                    Terms such as angle of twist (AOT), twists per inch (TPI), and wraps per inch (WPI)
+                                    are common attributes that appear in many of the trade journals available today.
+                                    PLY and SpinOff being two of the most popular. Each of these can be discretely
+                                    measured by the handspinner and used in explicative terms to describe the yarn
+                                    itself, and in comparative terms when comparing disparate yarns or yarns of the
+                                    same fibre, but spun at different <img style="float: left;
+                                        margin: 10px;"
+                                        src="LearnMore1.jpg"> times as part of a larger project. Angle of twist (AOT)
+                                    refers to the angle at which the plies appear relative to the axial length of
+                                    sample yarn. In general, the greater the angle, the less soft the yarn will be, or
+                                    more dense and hard. Twists per inch (TPI) refers to the number of rotations of the
+                                    yarn (whether clockwise or counter clockwise) in a unit of measure, in this case,
+                                    one inch. The more TPI, the higher the AOT, and consequently, the less soft the
+                                    yarn will be . Wraps per inch (WPI) refers to the thickness or diameter of the yarn
+                                    as it is laid side by side within a unit of measure, in this case, again, one inch.
+                                    In general, the more WPI, the finer the yarn. Each of these can easily be measured
+                                    with simple tools by the handspinner.<br><br>
 
-                                        Industry standards and studies, by contrast, offer limited usefulness in practice to the handspinner. Where the chemical and “anatomical” structures of various animal and plant fibres expand the knowledge and awareness of hanspinners, close analysis and presentation of metrics such as tensile strength breaking point, stress-strain curves, compression, tenacity, coefficient of friction lose their real-world applications for production methods dominated by hand-manipulation. Discoveries of new fibre properties and relationships benefit industry greatly in very real way: faster more efficient production (from fibre prepation to end-use fabric), reduction of waste, source fibres better suited to end-products, wider range of fabric design possibilities, new synthetic fibres, for example. Concepts of elasticity and resiliency, for example, are hidden within a wider range of fibre strength characteristics and often are focused on the fibre itself rather than the yarn. According to MG Huson, yarn can and is measured for strength, but <img src="LearnMore2.jpg" style="float:right;margin:10px"> because the strength of the yarn relies on friction introduced by twist and dynamics beyond the length of individual fibres, it is left “out of scope” (Hunson, 2009).  By contrast, the yarn itself is of primary importance to the craftsman.  Fibre characteristics play a secondary role and only insofar as they assert discernible differences in the final yarn.<br><br>
+                                    Industry standards and studies, by contrast, offer limited usefulness in practice
+                                    to the handspinner. Where the chemical and “anatomical” structures of various
+                                    animal and plant fibres expand the knowledge and awareness of hanspinners, close
+                                    analysis and presentation of metrics such as tensile strength breaking point,
+                                    stress-strain curves, compression, tenacity, coefficient of friction lose their
+                                    real-world applications for production methods dominated by hand-manipulation.
+                                    Discoveries of new fibre properties and relationships benefit industry greatly in
+                                    very real way: faster more efficient production (from fibre prepation to end-use
+                                    fabric), reduction of waste, source fibres better suited to end-products, wider
+                                    range of fabric design possibilities, new synthetic fibres, for example. Concepts
+                                    of elasticity and resiliency, for example, are hidden within a wider range of fibre
+                                    strength characteristics and often are focused on the fibre itself rather than the
+                                    yarn. According to MG Huson, yarn can and is measured for strength, but <img src="LearnMore2.jpg"
+                                        style="float:right;margin:10px"> because the strength of the yarn relies on
+                                    friction introduced by twist and dynamics beyond the length of individual fibres,
+                                    it is left “out of scope” (Hunson, 2009). By contrast, the yarn itself is of
+                                    primary importance to the craftsman. Fibre characteristics play a secondary role
+                                    and only insofar as they assert discernible differences in the final yarn.<br><br>
 
-                                        The perceptive capabilities for the craftsman, however, are limited to the five senses and whatever tools can be procured by relatively modest range of financial resources: rulers, scales, magnifying lenses, etc. Hence, other descriptive terms are not as easily ascertained, require more sophisticated equipment to quantify, or are not usually measured by the handspinner. These are, nonetheless, part of the preferred vocabulary for describing yarn. Terms such as crimp, bounce, memory, and softness, are not measurable as such, but can be derived directly from the above measurements, such as AOT, or as some sort of relationship between one or more measurable qualities, such as TPI and WPI to determine relative number of twists for a given diameter of yarn. The fewer the WPI and thicker the yarn, the softer it will be. Crimp, however, is a result of specialized mechanisms produced in the fleece and lock structure of fleece itself. The spring like wave is measured in the lock of the fleece before it is processed into a fiber  but <img src="LearnMore3.jpg" style="float:left;margin:10px"> preparation.  Crimp can be measured relatively easily as the number of waves per unit measure (usually one inch). However, the effect of fleece CPI in the final yarn–whether a greater number or lesser number–is not as easily quantifiable and is more general in nature. For example, Beth Smith explains that sheep breeds with a “wonderful crimp structure [in their wool], have a natural elasticity and memory built into them” (Smith, 2013).  The implication being that the more crimps per inch, the more elastic and more memory the resulting yarn will have. Whereas the relationship between crimp, elasticity and memory (or resiliency) could be made more clear if the handspinner were to measure the crimp of a specific fleece and subsequently measure the elasticity and memory of the yarn, in the case of blended and carded preparations, the crimp of constituent wool or the absence of wool altogether obscures the relationship and leaves only elasticity and resiliency (or memory) as observable characteristics. Crimp, then, is generally inadequate for quantifying elasticity vis-à-vis resiliency in describing handspun yarns especially when the source fiber has been processed and/or blended with other source fibres either commercially or by the handspinner themself.<br><br>
+                                    The perceptive capabilities for the craftsman, however, are limited to the five
+                                    senses and whatever tools can be procured by relatively modest range of financial
+                                    resources: rulers, scales, magnifying lenses, etc. Hence, other descriptive terms
+                                    are not as easily ascertained, require more sophisticated equipment to quantify, or
+                                    are not usually measured by the handspinner. These are, nonetheless, part of the
+                                    preferred vocabulary for describing yarn. Terms such as crimp, bounce, memory, and
+                                    softness, are not measurable as such, but can be derived directly from the above
+                                    measurements, such as AOT, or as some sort of relationship between one or more
+                                    measurable qualities, such as TPI and WPI to determine relative number of twists
+                                    for a given diameter of yarn. The fewer the WPI and thicker the yarn, the softer it
+                                    will be. Crimp, however, is a result of specialized mechanisms produced in the
+                                    fleece and lock structure of fleece itself. The spring like wave is measured in the
+                                    lock of the fleece before it is processed into a fiber but <img src="LearnMore3.jpg"
+                                        style="float:left;margin:10px"> preparation. Crimp can be measured relatively
+                                    easily as the number of waves per unit measure (usually one inch). However, the
+                                    effect of fleece CPI in the final yarn–whether a greater number or lesser number–is
+                                    not as easily quantifiable and is more general in nature. For example, Beth Smith
+                                    explains that sheep breeds with a “wonderful crimp structure [in their wool], have
+                                    a natural elasticity and memory built into them” (Smith, 2013). The implication
+                                    being that the more crimps per inch, the more elastic and more memory the resulting
+                                    yarn will have. Whereas the relationship between crimp, elasticity and memory (or
+                                    resiliency) could be made more clear if the handspinner were to measure the crimp
+                                    of a specific fleece and subsequently measure the elasticity and memory of the
+                                    yarn, in the case of blended and carded preparations, the crimp of constituent wool
+                                    or the absence of wool altogether obscures the relationship and leaves only
+                                    elasticity and resiliency (or memory) as observable characteristics. Crimp, then,
+                                    is generally inadequate for quantifying elasticity vis-à-vis resiliency in
+                                    describing handspun yarns especially when the source fiber has been processed
+                                    and/or blended with other source fibres either commercially or by the handspinner
+                                    themself.<br><br>
 
-                                        <img src="LearnMore4.jpg" style="float:right;margin:10px">It is this relationship between elasticity (the amount that the yarn will stretch) and resiliency (the tendency of the yarn to return to its original state after undergoing stress) that is the  but  focus of the study here. Further, the study attempts to quantify the relationship in providing a metric with which to describe handspun yarn much like AOT, TPI, and WPI: liveliness. Descriptors do well to impart an immediate impression and evaluation of a yarn, a resumé of its potential, so to speak. While liveliness moves beyond the skein itself and provides the handpsinner, handknitter, handweaver with a more concrete indicator of the success of the yarn in the chosen final project where liveliness is a critical component.
+                                    <img src="LearnMore4.jpg" style="float:right;margin:10px">It is this relationship
+                                    between elasticity (the amount that the yarn will stretch) and resiliency (the
+                                    tendency of the yarn to return to its original state after undergoing stress) that
+                                    is the but focus of the study here. Further, the study attempts to quantify the
+                                    relationship in providing a metric with which to describe handspun yarn much like
+                                    AOT, TPI, and WPI: liveliness. Descriptors do well to impart an immediate
+                                    impression and evaluation of a yarn, a resumé of its potential, so to speak. While
+                                    liveliness moves beyond the skein itself and provides the handpsinner, handknitter,
+                                    handweaver with a more concrete indicator of the success of the yarn in the chosen
+                                    final project where liveliness is a critical component.
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -312,135 +328,155 @@
                             </div>
                         </div>
                 </div>
-                <div class="modal fade" id="addNewYarnModal"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog addNewYarnModalDialog"   role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel2">Add New Yarn</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body addNewYarnModalBody"  >
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="form-group">
-                                            <label for="txtYarnId">Yarn ID</label>
-                                            <input type="text" style="width:70%" maxlength="6" size="10" class="form-control"
-                                                id="txtYarnId" aria-describedby="yarnIdHelp" placeholder="Enter Yarn ID">
-                                            <small id="yarnIdHelp" class="form-text text-muted">Enter a unique ID to help
-                                                you identify this yarn in the table.</small>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="txtElasticLength">Elastic Length (inches)</label>
-                                            <input id="txtElasticLength" type="number" step=".05" min="10" max="20" style="width:30%" class="form-control"  
-                                                aria-describedby="elasticHelp" value="11">
-                                            <small id="elasticHelp" class="form-text text-muted">Length in inches that a
-                                                'relaxed' 10" strand becomes when stretched.</small>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="txtResiliancyLength">Resiliancy Length (inches)</label>
-                                            <input  id="txtResiliancyLength" type="number"  step=".05"  style="width:30%" class="form-control" 
-                                                aria-describedby="resiliantHelp" placeholder="10.5" value ="10.5" min="9" max="20">
-                                            <small id="resiliantHelp" class="form-text text-muted">Length in inches that
-                                                the stretched yarn returns to after 1 minute.</small>
-                                        </div>
-            
-                                        <div class="form-group">
-                                            <label for="txtYarnNotes">Notes</label>
-                                            <textarea class="form-control" id="txtYarnNotes" rows="3" aria-describedby="notesHelp"></textarea>
-                                            <small id="resiliantHelp" class="form-text text-muted">Notes are seen as popups
-                                                in the yarn plot area.</small>
-                                        </div>
-            
-                                        <div class="form-group ">
-                                            <div class="row">
-                                                <fieldset  class="col-xs-2"  style="margin:0px 40px 0px 20px">
-                                                    <div class="form-group">Symbol</div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="symbolRadios" id="optionsRadios1"
-                                                                value="circle" checked>
-                                                            Circle
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="symbolRadios" id="optionsRadios2"
-                                                                value="square">
-                                                            Square
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="symbolRadios" id="optionsRadios3"
-                                                                value="triangle" >
-                                                            Triangle
-                                                        </label>
-                                                    </div>
-                                                </fieldset>
-                        
-                                                <fieldset class="col-xs-2">
-                                                    <div class="form-group">Color</div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optRed" value="red" checked>
-                                                                        Red
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optBlue" value="blue">
-                                                                        Blue
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="colorRadios" id="optGreen" value="green" >
-                                                                        Green
-                                                        </label>
-                                                    </div>                                                        
-                                                </fieldset>
-                                                <svg class="col-xs-2" style="margin-left:50px;margin-top:25px" height="24" width="24">
-                                                        <polygon class="yarnSymbol" id="symbolTriangle" style="visibility:hidden" fill="red" points="12,0 24,24 0,24" />
-                                                        <polygon  class="yarnSymbol" id="symbolSquare" style="visibility:hidden" fill="red" points="0,0 0,24 24,24 24,0"  />
-                                                        <circle  class="yarnSymbol" id="symbolCircle" style="visibility:unset" fill="red" cx="12" cy="12" r="12"   />
+                <div class="modal fade" id="addNewYarnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog addNewYarnModalDialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2">Add New Yarn</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body addNewYarnModalBody">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="txtYarnId">Yarn ID</label>
+                                                <input type="text" style="width:70%" maxlength="6" size="10" class="form-control"
+                                                    id="txtYarnId" aria-describedby="yarnIdHelp" placeholder="Enter Yarn ID">
+                                                <small id="yarnIdHelp" class="form-text text-muted">Enter a unique ID
+                                                    to help
+                                                    you identify this yarn in the table.</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtElasticLength">Elastic Length (inches)</label>
+                                                <input id="txtElasticLength" type="number" step=".05" min="10" max="20"
+                                                    style="width:30%" class="form-control" aria-describedby="elasticHelp"
+                                                    value="11">
+                                                <small id="elasticHelp" class="form-text text-muted">Length in inches
+                                                    that a
+                                                    'relaxed' 10" strand becomes when stretched.</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtResiliancyLength">Resiliancy Length (inches)</label>
+                                                <input id="txtResiliancyLength" type="number" step=".05" style="width:30%"
+                                                    class="form-control" aria-describedby="resiliantHelp" placeholder="10.5"
+                                                    value="10.5" min="9" max="20">
+                                                <small id="resiliantHelp" class="form-text text-muted">Length in inches
+                                                    that
+                                                    the stretched yarn returns to after 1 minute.</small>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtYarnNotes">Notes</label>
+                                                <textarea class="form-control" id="txtYarnNotes" rows="3"
+                                                    aria-describedby="notesHelp"></textarea>
+                                                <small id="resiliantHelp" class="form-text text-muted">Notes are seen
+                                                    as popups
+                                                    in the yarn plot area.</small>
+                                            </div>
+
+                                            <div class="form-group ">
+                                                <div class="row">
+                                                    <fieldset class="col-xs-2" style="margin:0px 40px 0px 20px">
+                                                        <div class="form-group">Symbol</div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="symbolRadios"
+                                                                    id="optionsRadios1" value="circle" checked>
+                                                                Circle
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="symbolRadios"
+                                                                    id="optionsRadios2" value="square">
+                                                                Square
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="symbolRadios"
+                                                                    id="optionsRadios3" value="triangle">
+                                                                Triangle
+                                                            </label>
+                                                        </div>
+                                                    </fieldset>
+
+                                                    <fieldset class="col-xs-2">
+                                                        <div class="form-group">Color</div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="colorRadios"
+                                                                    id="optRed" value="red" checked>
+                                                                Red
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="colorRadios"
+                                                                    id="optBlue" value="blue">
+                                                                Blue
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input" name="colorRadios"
+                                                                    id="optGreen" value="green">
+                                                                Green
+                                                            </label>
+                                                        </div>
+                                                    </fieldset>
+                                                    <svg class="col-xs-2" style="margin-left:50px;margin-top:25px"
+                                                        height="24" width="24">
+                                                        <polygon class="yarnSymbol" id="symbolTriangle" style="visibility:hidden"
+                                                            fill="red" points="12,0 24,24 0,24" />
+                                                        <polygon class="yarnSymbol" id="symbolSquare" style="visibility:hidden"
+                                                            fill="red" points="0,0 0,24 24,24 24,0" />
+                                                        <circle class="yarnSymbol" id="symbolCircle" style="visibility:unset"
+                                                            fill="red" cx="12" cy="12" r="12" />
                                                         Sorry, your browser does not support inline SVG.
-                                                </svg>
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-1 canvasText">
-                                            <canvas id="rulerCanvas" width="50" height="600"  ></canvas>
-                                        </div>  
-                                    <div class="col-lg-1 canvasText">
-                                            <canvas id="originalCanvas" height="600" width="50" ></canvas>
+                                        <div class="col-lg-1 canvasText">
+                                            <canvas id="rulerCanvas" width="50" height="600"></canvas>
+                                        </div>
+                                        <div class="col-lg-1 canvasText">
+                                            <canvas id="originalCanvas" height="600" width="50"></canvas>
                                             <div id='startLabel'>Start: <span>10"</span></div>
-                                    </div>
-                                    <div class="col-lg-1 canvasText">
-                                        <canvas id="stretchedCanvas" height="600" width="50"  ></canvas>
-                                        <div id='elasticLabel'><span>Elastic</span> Length<span><div id='elasticLabelValue'>11"</div></div>
-                                    </div>
-                                    <div class="col-lg-1 canvasText">
-                                            <canvas id="relaxedCanvas" height="600" width="50"  ></canvas>
-                                            <div id='resiliancyLabel' style='z-index:9'><span>Resilancy</span> Length<span></span> <div id='resiliancyLabelValue'>10.5"</div></div>
+                                        </div>
+                                        <div class="col-lg-1 canvasText">
+                                            <canvas id="stretchedCanvas" height="600" width="50"></canvas>
+                                            <div id='elasticLabel'><span>Elastic</span> Length<span>
+                                                    <div id='elasticLabelValue'>11"</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 canvasText">
+                                            <canvas id="relaxedCanvas" height="600" width="50"></canvas>
+                                            <div id='resiliancyLabel' style='z-index:9'><span>Resilancy</span> Length<span></span>
+                                                <div id='resiliancyLabelValue'>10.5"</div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- <div>
                                             <label for = "spinner-4">Amount to donate:</label>
                                             <input id = "spinner-4" name = "spinner" value = "10">
                                     </div> -->
-                                <button type="submit" id="btnAddYarn" class="btn btn-primary"  data-dismiss="modal">Add Yarn</button>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                    <button type="submit" id="btnAddYarn" class="btn btn-primary" data-dismiss="modal">Add
+                                        Yarn</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
                 <!-- <img id="rulerImg" width="30" height="400" src="ruler.png"   alt="The Scream"> -->
+
 </html>
