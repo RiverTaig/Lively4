@@ -58,10 +58,10 @@
         <div id="whatIsLiveliness">
             <div id="whatIsLivelinessBackground" style="height:90%;">
                 <div id="whatIsLivelinessDiv">
-                    <h3 class="section">What is Liveliness ?</h3>
+                    <h3 class="section" style="margin-bottom:0px">What is Liveliness ?</h3>
                     <div class="textIndent">
-                        <div id="sampleEntry" style="visibility:unset">
-                            Today’s handspinners have a handful of useful terms to describe and document their handspun
+                        <div id="sampleEntry" style="visibility:unset;padding-top:10px">
+                            Today&lsquo;s handspinners have a handful of useful terms to describe and document their handspun
                             yarns. Twists per inch (TPI), angle of twist (AOT), and wraps per inch (WPI) are now fairly
                             well understood by all levels of handspinners. Although elasticity and resiliency are part
                             of the common lexicon, elasticity is only used in the general sense, and resiliency appears
@@ -84,12 +84,12 @@
         <div id="relativeAbsolute">
             <div>
                 <div style="line-height:24px">
-                    <SPAN class="toggleLabel relative left">REL</SPAN>
+                    <SPAN class="toggleLabel relative left">RELATIVE</SPAN>
                     <label class="switch">
-                        <input onclick=toggleSwitch('relative',drawRel,drawAbs) id="yyy" type="checkbox" checked>
+                        <input onclick=toggleSwitch('relative',drawRel,drawAbs) id="relAbsToggle" type="checkbox" checked>
                         <span class="slider round"></span>
                     </label>
-                    <SPAN class="toggleLabel relative on right">ABS</SPAN>
+                    <SPAN class="toggleLabel relative on right">ABSOLUTE</SPAN>
                     <div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                 </div>
                 <div>
                     <ol>
-                        <li>Lay a 24” piece of test yarn over a ruler or yardstick.</li>
+                        <li>Lay a 24&rdquo; piece of test yarn over a ruler or yardstick.</li>
                         <li>Make sure the yarn is lengthened to remove any curves, but relaxed so as not to distort or
                             extend the fibers.
                             <figure>
@@ -124,19 +124,19 @@
                                 <figcaption>Fig 1 - Relaxed yarn</figcaption>
                             </figure>
                         </li>
-                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area is 10” in
+                        <li>With the thumb and forefinger of each hand pinch the yarn so that the test area is 10&rdquo; in
                             length.
                             <figure>
                                 <img src="10InchRuler.jpg" style="width:23vw;height:8vw;margin:15px">
-                                <figcaption>Fig.2 - 10" test length.</figcaption>
+                                <figcaption>Fig.2 - 10&rdquo; test length.</figcaption>
                             </figure>
                         </li>
                         <li>Stretch the length of yarn as far as it will stretch, but no further. This is the
-                            elasticity or elastic length of the yarn. Percentage of the original length (10”).
+                            elasticity or elastic length of the yarn. Percentage of the original length (10&rdquo;).
                             This is the yield strength point of the stress/strain curve.
                             <figure>
                                 <img src="StretchedRuler.png" style="width:23vw;height:8vw;margin:15px">
-                                <figcaption>Fig.3 - The elastic length is 12.25".</figcaption>
+                                <figcaption>Fig.3 - The elastic length is 12.25&rdquo;</figcaption>
                             </figure>
                         </li>
                         <li>Take note of the length in decimal inches.</li>
@@ -194,6 +194,9 @@
 
         </div>  
     </div>
+    <div>
+        <img src="giphy.gif" id="highlighter" width="24px" style="position:absolute;top:-500px;left:500px;">
+    </div>
     <script>
         window.onload = () => {
             Init();
@@ -209,7 +212,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Today’s handspinner is acutely aware of integral qualities of fibre which allow
+                                    Today&rsquo;s handspinner is acutely aware of integral qualities of fibre which allow
                                     them to describe and ultimately predict the behaviour of their finished yarns.
                                     Terms such as angle of twist (AOT), twists per inch (TPI), and wraps per inch (WPI)
                                     are common attributes that appear in many of the trade journals available today.
@@ -244,7 +247,7 @@
                                     yarn. According to MG Huson, yarn can and is measured for strength, but <img src="LearnMore2.jpg"
                                         style="float:right;margin:10px"> because the strength of the yarn relies on
                                     friction introduced by twist and dynamics beyond the length of individual fibres,
-                                    it is left “out of scope” (Hunson, 2009). By contrast, the yarn itself is of
+                                    it is left &lsquo;out of scope&rsquo; (Hunson, 2009). By contrast, the yarn itself is of
                                     primary importance to the craftsman. Fibre characteristics play a secondary role
                                     and only insofar as they assert discernible differences in the final yarn.<br><br>
 
@@ -263,10 +266,10 @@
                                     lock of the fleece before it is processed into a fiber but <img src="LearnMore3.jpg"
                                         style="float:left;margin:10px"> preparation. Crimp can be measured relatively
                                     easily as the number of waves per unit measure (usually one inch). However, the
-                                    effect of fleece CPI in the final yarn–whether a greater number or lesser number–is
+                                    effect of fleece CPI in the final yarn-whether a greater number or lesser number-is
                                     not as easily quantifiable and is more general in nature. For example, Beth Smith
-                                    explains that sheep breeds with a “wonderful crimp structure [in their wool], have
-                                    a natural elasticity and memory built into them” (Smith, 2013). The implication
+                                    explains that sheep breeds with a &ldquo;wonderful crimp structure [in their wool], have
+                                    a natural elasticity and memory built into them&rdquo; (Smith, 2013). The implication
                                     being that the more crimps per inch, the more elastic and more memory the resulting
                                     yarn will have. Whereas the relationship between crimp, elasticity and memory (or
                                     resiliency) could be made more clear if the handspinner were to measure the crimp
@@ -285,7 +288,7 @@
                                     is the but focus of the study here. Further, the study attempts to quantify the
                                     relationship in providing a metric with which to describe handspun yarn much like
                                     AOT, TPI, and WPI: liveliness. Descriptors do well to impart an immediate
-                                    impression and evaluation of a yarn, a resumé of its potential, so to speak. While
+                                    impression and evaluation of a yarn, a resume&lsquo; of its potential, so to speak. While
                                     liveliness moves beyond the skein itself and provides the handpsinner, handknitter,
                                     handweaver with a more concrete indicator of the success of the yarn in the chosen
                                     final project where liveliness is a critical component.
