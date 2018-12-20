@@ -162,7 +162,7 @@ function checkForFormErrors(yarnID, yarnNotes, elasticLength, resilancyLength, e
         error = true;
     }
     if (elasticLength < resilancyLength) {
-        alert("Resiliancy Length must be less than Elastic Length");
+        alert("Resiliency Length must be less than Elastic Length");
         error = true;
     }
     if (yarnIds[yarnID] === 1) {
@@ -218,6 +218,7 @@ function PlotDataTableOnCanvasUsingRelativeScale(e) {
         
         //dots is the array that holds informatio for the tooltip
         dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip: yarnNotes, yarnID: sample });
+        //console.log("Just pushed: " + sample + " -- " + livelyness)
         //but before drawing, we have to invert
         outReturnPlotPoint.y = w - outReturnPlotPoint.y;
         drawLeaderLine(getContext2D(), p, outReturnPlotPoint)
@@ -400,12 +401,10 @@ function loadTable() {
                     var bodyRect = document.body.getBoundingClientRect()
 
                     var rect = canvasDiv.getBoundingClientRect();
-                    //console.log(bodyRect.top)
-                    //console.log(rect.top, rect.right, rect.bottom, rect.left);
                     let w = rect.left;// canvasDiv.offsetLeft;
                     let h =   rect.top;//canvasDiv.offsetTop;
-                    document.getElementById("highlighter" ).style.top = (rect.top-12+y) + "px";//y +  h +  bodyRect.top) + "px"
-                    document.getElementById("highlighter" ).style.left = (rect.left-12+x) + "px";//x +  w - 12) + "px"
+                    document.getElementById("highlighter" ).style.top = (rect.top-16+y) + "px";//y +  h +  bodyRect.top) + "px"
+                    document.getElementById("highlighter" ).style.left = (rect.left-16+x) + "px";//x +  w - 12) + "px"
                     $( "#highlighter" ).show()
                 }
             }
@@ -562,8 +561,17 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
 function addTextToCanvasAtPoint(ctx, sample, p, livelyness) {
     ctx.font = "10px Arial";
     ctx.fillStyle = "#000000";
-    ctx.fillText(sample, p.x + 12, p.y);
-    ctx.fillText(livelyness, p.x + 12, p.y + 12);
+    let percentX = p.x / canvasRef().width
+    if(percentX < .9){
+        ctx.textAlign = "start"; 
+        ctx.fillText(sample, p.x + 8, p.y);
+        //ctx.fillText(livelyness, p.x + 11, p.y + 11);
+    }
+    else{
+        ctx.textAlign = "end"; 
+        ctx.fillText( sample, p.x - 8, p.y);
+        //ctx.fillText( livelyness, p.x - 11, p.y -11);
+    }
 }
 
 function drawLeaderLine(ctx, p, outReturnPlotPoint) {
@@ -616,8 +624,9 @@ function redrawCanvas(canvas) {
     let pixelsToInstructions = window.innerWidth * (.57 - .26);
     if (pixelsToDataTable < pixelsToInstructions) {
         $('#myCanvas').css('grid-row', '14/70');
-        canvas.height = pixelsToDataTable;
+        canvas.height = pixelsToDataTable - 10;
         canvas.width = canvas.height
+        console.log("ONE: PTDT,CH " + pixelsToDataTable + " : " + canvas.height)
     }
     else {
         let percentWeCanGoDown = pixelsToInstructions / pixelsToDataTable
@@ -625,8 +634,9 @@ function redrawCanvas(canvas) {
         let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
         let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
         $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
-        canvas.width = pixelsToInstructions;
+        canvas.width = pixelsToInstructions 
         canvas.height = canvas.width
+        console.log("TWO: pwcgd " + percentWeCanGoDown + " : " + canvas.height)
     }
 
     $('#myCanvas').css('z-index', '0');
@@ -639,7 +649,7 @@ function redrawCanvas(canvas) {
     //therefore constrained the canvas).  Now that the canvas has been drawn though, the instructions
     //will actually go just to their left
     let canvasRightEdgePercentPosition = (canvas.offsetLeft + canvas.width) / window.innerWidth;
-    let instructionPosition = parseInt(2 + (100 * canvasRightEdgePercentPosition)) + "/100"
+    let instructionPosition = parseInt(2.5 + (100 * canvasRightEdgePercentPosition)) + "/100"
     $('#instructions').css('grid-column', instructionPosition);
     $('#instructionsContentContainer').css('grid-column', instructionPosition);
 }

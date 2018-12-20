@@ -39,6 +39,7 @@
                     adjustElRlImagesOnCanvas('elastic');
                 }
             });
+            
         });
     </script>
 </head>
@@ -121,14 +122,14 @@
                             extend the fibers.
                             <figure>
                                 <img src="img1Ruler.png" style="width:23vw;height:8vw;margin:20px">
-                                <figcaption>Fig 1 - Relaxed yarn</figcaption>
+                                <figcaption>Fig. 1 - Relaxed yarn</figcaption>
                             </figure>
                         </li>
                         <li>With the thumb and forefinger of each hand pinch the yarn so that the test area is 10&rdquo; in
                             length.
                             <figure>
                                 <img src="10InchRuler.jpg" style="width:23vw;height:8vw;margin:15px">
-                                <figcaption>Fig.2 - 10&rdquo; test length.</figcaption>
+                                <figcaption>Fig. 2 - 10&rdquo; test length</figcaption>
                             </figure>
                         </li>
                         <li>Stretch the length of yarn as far as it will stretch, but no further. This is the
@@ -136,7 +137,7 @@
                             This is the yield strength point of the stress/strain curve.
                             <figure>
                                 <img src="StretchedRuler.png" style="width:23vw;height:8vw;margin:15px">
-                                <figcaption>Fig.3 - The elastic length is 12.25&rdquo;</figcaption>
+                                <figcaption>Fig. 3 - The elastic length is 12.25&rdquo;</figcaption>
                             </figure>
                         </li>
                         <li>Take note of the length in decimal inches.</li>
@@ -152,7 +153,7 @@
                             resiliency or resilient length of the yarn. Percentage of the elastic length recovered.
                             <figure>
                             <img src="RLRuler.jpg" style="width:23vw;height:8vw;margin:15px">
-                            <figcaption>Fig. 5 - The resiliant length is 10.25"</figcaption>
+                            <figcaption>Fig. 5 - The resiliant length is 10.25&rdquo;</figcaption>
                         </figure>   
                         <li>Take note of the length in decimal inches.</li>
 
@@ -175,7 +176,7 @@
                         <th></th>
                         <th>Symbol</th>
                         <th>Elastic Length</th>
-                        <th>Resiliancy Length</th>
+                        <th>Resiliency Length</th>
                         <th class=".lively">Liveliness</th>
                         <th>Notes</th>
                         <th>Remove</th>
@@ -195,13 +196,15 @@
         </div>  
     </div>
     <div>
-        <img src="giphy.gif" id="highlighter" width="24px" style="position:absolute;top:-500px;left:500px;">
+        <img src="giphy2.gif" id="highlighter" width="32px" style="position:absolute;top:-500px;left:500px;">
     </div>
     <script>
         window.onload = () => {
             Init();
             loadTable();
-            $("#loadDataButton").click(); } </script> </body> <div class="modal fade" id="exampleModal"
+            $("#loadDataButton").click(); 
+            $('#relAbsToggle').click();} 
+    </script> </body> <div class="modal fade" id="exampleModal"
                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -316,38 +319,48 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label for="txtYarnId">Yarn ID</label>
-                                                <input type="text" style="width:70%" maxlength="6" size="10" class="form-control"
+                                                <div data-tip="Enter a unique ID to help you identify this yarn in the table.">
+                                                    <input type="text" style="width:70%" maxlength="6" size="10" class="form-control"
                                                     id="txtYarnId" aria-describedby="yarnIdHelp" placeholder="Enter Yarn ID">
+                                                </div>
+<!-- 
                                                 <small id="yarnIdHelp" class="form-text text-muted">Enter a unique ID
                                                     to help
-                                                    you identify this yarn in the table.</small>
+                                                    you identify this yarn in the table.</small> -->
                                             </div>
                                             <div class="form-group">
                                                 <label for="txtElasticLength">Elastic Length (inches)</label>
-                                                <input id="txtElasticLength" type="number" step=".05" min="10" max="20"
+                                                <div data-tip="Length in inches that a 'relaxed' 10&quot; strand becomes when stretched.">
+                                                    <input id="txtElasticLength" type="number" step=".05" min="10" max="20"
                                                     style="width:30%" class="form-control" aria-describedby="elasticHelp"
                                                     value="11">
-                                                <small id="elasticHelp" class="form-text text-muted">Length in inches
+                                                </div>
+
+                                                <!-- <small id="elasticHelp" class="form-text text-muted">Length in inches
                                                     that a
-                                                    'relaxed' 10" strand becomes when stretched.</small>
+                                                    'relaxed' 10" strand becomes when stretched.</small> -->
                                             </div>
                                             <div class="form-group">
-                                                <label for="txtResiliancyLength">Resiliancy Length (inches)</label>
-                                                <input id="txtResiliancyLength" type="number" step=".05" style="width:30%"
+                                                <label for="txtResiliancyLength">Resiliency Length (inches)</label>
+                                                <div data-tip="Length in inches that the stretched yarn returns to after 1 minute.">
+                                                    <input id="txtResiliancyLength" type="number" step=".05" style="width:30%"
                                                     class="form-control" aria-describedby="resiliantHelp" placeholder="10.5"
                                                     value="10.5" min="9" max="20">
+                                                </div>
+<!-- 
                                                 <small id="resiliantHelp" class="form-text text-muted">Length in inches
                                                     that
-                                                    the stretched yarn returns to after 1 minute.</small>
+                                                    the stretched yarn returns to after 1 minute.</small> -->
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtYarnNotes">Notes</label>
-                                                <textarea class="form-control" id="txtYarnNotes" rows="3"
+                                                <div data-tip="Notes are seen as popups in the yarn plot area.">
+                                                    <textarea class="form-control" id="txtYarnNotes" rows="3"
                                                     aria-describedby="notesHelp"></textarea>
-                                                <small id="resiliantHelp" class="form-text text-muted">Notes are seen
-                                                    as popups
-                                                    in the yarn plot area.</small>
+                                                </div>
+
+                                                <!-- <small id="resiliantHelp" class="form-text text-muted"></small> -->
                                             </div>
 
                                             <div class="form-group ">
@@ -440,12 +453,13 @@
                                     </div> -->
                                     <button type="submit" id="btnAddYarn" class="btn btn-primary" data-dismiss="modal">Add
                                         Yarn</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </form>
                             </div>
-                            <div class="modal-footer">
+                            <!-- <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                            </div>
+                                 <button type="button" class="btn btn-primary">Save changes</button> 
+                            </div> -->
                         </div>
                     </div>
                 </div>

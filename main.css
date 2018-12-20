@@ -172,7 +172,7 @@ span > a {
 #instructionsContentContainer{
     grid-column: 57/100;
     grid-row: 15/72;
-    height: calc(0px + 61vh); 
+    height: calc(0px + 60vh); 
     overflow-y: scroll;
     border-left: 2px solid gray;
 }
@@ -187,14 +187,14 @@ span > a {
 }
 .addNewYarnModalDialog {
     max-width: unset !important;
-    width:50% !important;
+    width:40% !important;
     margin: 30px auto;
 }
 input[type='number'],input[type='text'], #yarnNotes {
     color: blue;
 }
 #myCanvas{
-    background-color: rgb(219, 225, 255);
+    background-color: rgb(198, 202, 190);
     outline: 2px solid slateblue;
 }
 .canvasText{
@@ -274,9 +274,9 @@ h1 {
     position: relative;
     display: inline-block;
     width: 60px;
-    height: 24px;
+    height: 20px;
   }
-  
+
   .switch input { 
     opacity: 0;
     width: 0;
@@ -286,11 +286,12 @@ h1 {
   display:inline-block;
   vertical-align:text-top;
   color:gray;
-  font-weight: bold;
+  
   font-size: calc(10px + .15vw);
   }
   .toggleLabel.on{
-  color:#28A745;
+  color:rgb(88, 206, 116);
+  font-weight: bold;
   }
    
   .slider {
@@ -308,10 +309,10 @@ h1 {
   .slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 26px;
+    height: 14px;
+    width: 22px;
     left: 4px;
-    bottom: 4px;
+    bottom: 3px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
@@ -335,10 +336,7 @@ h1 {
   .slider.round {
     border-radius: 34px;
   }
-  .modal-backdrop {
-    /* bug fix - no overlay */    
-    /* display: none;     */
-}
+
   .slider.round:before {
     border-radius: 50%;
   }
@@ -371,7 +369,7 @@ h1 {
 	top:35px;
 	left:0px;
 	padding:5px 8px 25px 5px;
-	background:#e1e456;
+	background:#8fb2cc;
 	color:rgb(0, 0, 0);
 	z-index:9;
 	font-size: 0.75em;
