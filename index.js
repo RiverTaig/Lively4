@@ -403,7 +403,7 @@ function loadTable() {
                     var rect = canvasDiv.getBoundingClientRect();
                     let w = rect.left;// canvasDiv.offsetLeft;
                     let h =   rect.top;//canvasDiv.offsetTop;
-                    document.getElementById("highlighter" ).style.top = (rect.top-16+y) + "px";//y +  h +  bodyRect.top) + "px"
+                    document.getElementById("highlighter" ).style.top = (rect.top +y) + "px";//y +  h +  bodyRect.top) + "px"
                     document.getElementById("highlighter" ).style.left = (rect.left-16+x) + "px";//x +  w - 12) + "px"
                     $( "#highlighter" ).show()
                 }
@@ -749,18 +749,32 @@ function drawLine(ctx, x, y, startX = 0, startY = 0) {
 
 // show tooltip when mouse hovers over dot
 var dots = [];
+var previousHighlightedRow = null;
 function handleMouseMove(e) {
-
+    var canvasOffset = $('#myCanvas')[0].getBoundingClientRect()
+    //var { left, top } = canvasOffset;
+    var left = canvasOffset.x;
+    var top = canvasOffset.top;
+    let mouseX = parseInt(e.clientX - left);
+    let mouseY = parseInt(e.clientY - top);
+    //debugger
     var graph = canvasRef();
+    let ctx = getContext2D();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#FF0000";
+    //debugger
+    ctx.clearRect(0,0,50,50)
+    ctx.fillRect(0,0,50,50);
+    ctx.textAlign = "start"; 
+    ctx.fillStyle = "#0000FF";
+    ctx.fillText(mouseX.toString() + "," + mouseY.toString(),3,16,47)
     var tipCanvas = document.getElementById("tip");
     var tipCtx = tipCanvas.getContext("2d");
-    var canvasOffset = $('#myCanvas').offset();
-    var { left, top } = canvasOffset;
 
-    mouseX = parseInt(e.clientX - left);
-    mouseY = parseInt(e.clientY - top);
+
 
     var hit = false;
+    let yarnIDToSelectInTable = ""
     for (var i = 0; i < dots.length; i++) {
         var dot = dots[i];
         var dx = mouseX - dot.x;
@@ -771,11 +785,26 @@ function handleMouseMove(e) {
             tipCanvas.style.top = (y + dot.y - 40) + "px";
             tipCtx.clearRect(0, 0, tipCanvas.width, tipCanvas.height);
             tipCtx.fillText(dot.tip, 5, 15);
+            yarnIDToSelectInTable = dot.yarnID
             hit = true;
         }
     }
     if (!hit) {
         tipCanvas.style.left = "-200px";
+    }
+    else{
+        if(yarnIDToSelectInTable !== ""){
+            let td = $('td:contains("' + yarnIDToSelectInTable + '")')
+            let tr = td[0].parentElement;
+            tr.scrollIntoView(true);
+            if(previousHighlightedRow !== null){
+                previousHighlightedRow.style.backgroundColor = 'unset'
+            }
+            tr.style.backgroundColor = "yellow"
+            previousHighlightedRow = tr;
+            console.log("Scrolled")
+        }
+
     }
 }
 /* ********************************************************************** */
