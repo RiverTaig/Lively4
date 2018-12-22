@@ -66,13 +66,13 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
     yaxis.style.left = rotateWidth + "px";
     DrawResiliancyLine();
 
-    if (plotHookSet === false) {
-        $(".livelyInput").bind('keyup input', function () {
-            let canvas = canvasRef();
-            drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
-        });
-        plotHookSet = true;
-    }
+    // if (plotHookSet === false) {
+    //     $(".livelyInput").bind('keyup input', function () {
+    //         let canvas = canvasRef();
+    //         drawPlotPointAndCalculateLiveliness(canvas.width, canvas.height);
+    //     });
+    //     plotHookSet = true;
+    // }
 
     canvas.onmousemove = function (e) {
         try {
@@ -87,8 +87,8 @@ function resizeInstructionsAndCanvas(canvas, h, w) {
 var yarnIds = {};
 function Init() {
     //document.getElementById("highlighter").visibility = 'unset';
-    $( "#highlighter" ).hide()
-    
+    $("#highlighter").hide()
+
     onResize();
 
     adjustElRlImagesOnCanvas();
@@ -121,7 +121,7 @@ function Init() {
     });
     $("#btnAddYarn").click((event) => {
         try {
-            if(relAbsMode === 'Relative'){
+            if (relAbsMode === 'Relative') {
                 $('#relAbsToggle').click();
             }
             let yarnID = $("#txtYarnId").val();
@@ -141,7 +141,6 @@ function Init() {
             let svgSymbol = getSVGSymbol(color, symbol);
 
             let data = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, false, elasticLength, 10, resilancyLength, yarnID, color, symbol, 8, yarnNotes);
-            console.log("about to add: " + yarnID + " LI=" + data.livelyness)
             dataTableReference().row.add([
                 yarnID, svgSymbol, elasticLength, resilancyLength,
                 "<span class='lively'>" + data.livelyness + "</span>",
@@ -173,10 +172,8 @@ function checkForFormErrors(yarnID, yarnNotes, elasticLength, resilancyLength, e
 }
 
 function PlotDataTableOnCanvasUsingRelativeScale(e) {
-let ids = {}
-    let t = dataTableReference().table();
     let rows = dataTableReference().table().rows();
-    if(rows.count() < 2){
+    if (rows.count() < 2) {
         alert("Sorry - you must have at least two rows to use relative scaling.")
         return;
     }
@@ -184,114 +181,53 @@ let ids = {}
     let erase = true;
     useRelative = true
     let w = parseFloat(canvasRef().width);
-    let minX = 9999; let minY = 9999; let maxX = -9999; let maxY = -9999;
     let sl = 10;
     dots = [];
-    let size = 8;
-
-    var table = $('#example').DataTable();
     let cntr = 0;
-    table.rows().every( function () {
-        var d = this.data();
-        console.log("TEST " + d[0])
-        let row = d;
-        let el = parseFloat(row[2]);
-        let rl = parseFloat(row[3]);
-        let svgSymbol = (row[1]).toString();
-        let { color, symbol } = getSymbolAndColorFromSvgSymbol(svgSymbol);
-        let yarnNotes = row[5]
-        let sample = row[0]
-        if(sample == "#15.2"){
-            //debugger
-        }
-        if (ids.hasOwnProperty(sample)){
-            //debugger
-        }
-        ids[sample]=cntr.toString();
-        let absXY = row[7].split(',')
-        let absX = parseFloat(absXY[0]);
-        let absY = parseFloat(absXY[1]);
-        let percentRangeX = (absX - minMaxXY.minRLAdj) / (minMaxXY.maxRLAdj - minMaxXY.minRLAdj)
-        let newX = w * percentRangeX;
-        let percentRangeY = (absY - minMaxXY.minELAdj) / (minMaxXY.maxELAdj - minMaxXY.minELAdj)
-        let newY = w * percentRangeY;
-        let rp = { x: newX, y: newY }
-
-        let { plotPoint, livelyness } = drawPlotPointAndCalculateLiveliness(w, w, erase, el, sl, rl, sample, color, symbol, 8, yarnNotes, sample, rp)
-        plotPoint.y = w - plotPoint.y;
-        erase = false;
-        var { lineFromPoint, lineToPoint, outReturnPlotPoint, p } = readyCallForDistToSegment(w, plotPoint, w);
-
-        let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
-        livelyness = correctLivelinessSign(outReturnPlotPoint, plotPoint, dEntered);
-        //var temp = row;// t.row(i).data();
-        //row[4] = "<span class='lively'>" +  livelyness + "</span>" ;
-        console.log("PlotDataTableOnCanvasUsingRelativeScale: " + row[0] + " : "  + row[4]) + " : " + livelyness
-        //$('#example').dataTable().fnUpdate(row,i, undefined, false);
-        table.cell(this, 4).data("<span class='lively'>" +  livelyness + "</span>").draw();
-        //"<span class='lively'>" +  livelyness + "</span>" 
-
-        //dots is the array that holds informatio for the tooltip
-
-        //but before drawing, we have to invert
-        outReturnPlotPoint.y = w - outReturnPlotPoint.y;
-        drawLeaderLine(getContext2D(), p, outReturnPlotPoint)
-        dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip: livelyness + ": " + yarnNotes, yarnID: sample, toPoint: outReturnPlotPoint });
-        addTextToCanvasAtPoint(getContext2D(), sample, p, livelyness)
-        erase = false;
-
-        d.counter++; // update data source for the row
-        this.invalidate(); // invalidate the data DataTables has cached for this row
-        cntr++;
-    } );
-
-
-return;
-
-    for (let i = 0; i < rows.count(); i++) {
-        let row = rows.data()[i];
-        let el = parseFloat(row[2]);
-        let rl = parseFloat(row[3]);
-        let svgSymbol = (row[1]).toString();
-        let { color, symbol } = getSymbolAndColorFromSvgSymbol(svgSymbol);
-        let yarnNotes = row[5]
-        let sample = row[0]
-        if (ids.hasOwnProperty(sample)){
-            //debugger
-        }
-        ids[sample]=i.toString();
-        let absXY = row[7].split(',')
-        let absX = parseFloat(absXY[0]);
-        let absY = parseFloat(absXY[1]);
-        let percentRangeX = (absX - minMaxXY.minRLAdj) / (minMaxXY.maxRLAdj - minMaxXY.minRLAdj)
-        let newX = w * percentRangeX;
-        let percentRangeY = (absY - minMaxXY.minELAdj) / (minMaxXY.maxELAdj - minMaxXY.minELAdj)
-        let newY = w * percentRangeY;
-        let rp = { x: newX, y: newY }
-
-        let { plotPoint, livelyness } = drawPlotPointAndCalculateLiveliness(w, w, erase, el, sl, rl, i.toString(), color, symbol, 8, yarnNotes, i.toString(), rp)
-        plotPoint.y = w - plotPoint.y;
-        erase = false;
-        var { lineFromPoint, lineToPoint, outReturnPlotPoint, p } = readyCallForDistToSegment(w, plotPoint, w);
-
-        let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
-        livelyness = correctLivelinessSign(outReturnPlotPoint, plotPoint, dEntered);
-        //var temp = row;// t.row(i).data();
-        row[4] = "<span class='lively'>" +  livelyness + "</span>" ;
-        console.log("PlotDataTableOnCanvasUsingRelativeScale: " + row[0] + " : "  + row[4]) + " : " + livelyness
-        $('#example').dataTable().fnUpdate(row,i, undefined, false);
-        
-        //dots is the array that holds informatio for the tooltip
-
-        //but before drawing, we have to invert
-        outReturnPlotPoint.y = w - outReturnPlotPoint.y;
-        drawLeaderLine(getContext2D(), p, outReturnPlotPoint)
-        dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip: livelyness + ": " + yarnNotes, yarnID: sample, toPoint: outReturnPlotPoint });
-        addTextToCanvasAtPoint(getContext2D(), sample, p, livelyness)
-        erase = false;
-    }
-
+    dataTableReference().rows().every(function () {
+        ({ cntr, erase } = UpdateLivelinessInTable(this, cntr, minMaxXY, erase, sl, dataTableReference(), true));
+    });
 }
+function UpdateLivelinessInTable(rowRef, cntr, minMaxXY, erase, sl, table, useRelativeScale) {
+    let size = 8;
+    let w = canvasRef().width;
+    var d = rowRef.data();
+    let row = d;
+    let el = parseFloat(row[2]);
+    let rl = parseFloat(row[3]);
+    let svgSymbol = (row[1]).toString();
+    let { color, symbol } = getSymbolAndColorFromSvgSymbol(svgSymbol);
+    let yarnNotes = row[5];
+    let sample = row[0];
+    let rp = null;
+    if (useRelativeScale) {
+        let absXY = row[7].split(',');
+        let absX = parseFloat(absXY[0]);
+        let absY = parseFloat(absXY[1]);
+        let percentRangeX = (absX - minMaxXY.minRLAdj) / (minMaxXY.maxRLAdj - minMaxXY.minRLAdj);
+        let newX = w * percentRangeX;
+        let percentRangeY = (absY - minMaxXY.minELAdj) / (minMaxXY.maxELAdj - minMaxXY.minELAdj);
+        let newY = w * percentRangeY;
+        rp = { x: newX, y: newY };
+    }
+    let { plotPoint, livelyness } = drawPlotPointAndCalculateLiveliness(w, w, erase, el, sl, rl, sample, color, symbol, 8, yarnNotes, sample, rp);
+    plotPoint.y = w - plotPoint.y;
+    erase = false;
+    var { lineFromPoint, lineToPoint, outReturnPlotPoint, p } = readyCallForDistToSegment(w, plotPoint, w);
+    let dEntered = distToSegment(plotPoint, lineFromPoint, lineToPoint, outReturnPlotPoint);
+    livelyness = correctLivelinessSign(outReturnPlotPoint, plotPoint, dEntered);
+    table.cell(rowRef, 4).data("<span class='lively'>" + livelyness + "</span>").draw();
+    outReturnPlotPoint.y = w - outReturnPlotPoint.y;
+    drawLeaderLine(getContext2D(), p, outReturnPlotPoint);
+    dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip:  livelyness + ": " + yarnNotes, yarnID: sample, toPoint: outReturnPlotPoint });
+    addTextToCanvasAtPoint(getContext2D(), sample, p, livelyness);
+    erase = false;
+    d.counter++;
+    rowRef.invalidate();
+    cntr++;
+    return { cntr, erase };
+}
+
 function getSymbolAndColorFromSvgSymbol(svgSymbol) {
     let pointsInStringPosition = svgSymbol.toUpperCase().indexOf("POINTS");
     let fillInStringPosition = svgSymbol.toUpperCase().indexOf("FILL");
@@ -422,7 +358,7 @@ function dataTableReference() {
             }
         });
     }
-    
+
     return _dataTableReference;
 }
 
@@ -447,39 +383,38 @@ function loadTable() {
 
     $('#example tbody').on('click', 'tr', function () {
         //$(this).toggleClass('selected');
+        if (previousHighlightedRow !== null) {
+            previousHighlightedRow.style = ''
 
-        if ( $(this).hasClass('selected') ) {
+        }
+        if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
-            //$( "#highlighter" ).hide()
+            $("#highlighter").hide()
         }
         else {
             $('tr.selected').removeClass('selected');
             $(this).addClass('selected');
             let selectedId = this.children[0].innerText;
-            for(let i = 0 ; i < dots.length; i++){
+            for (let i = 0; i < dots.length; i++) {
                 let yarnId = dots[i].yarnID;
-                if(selectedId === yarnId){
+                if (selectedId === yarnId) {
                     let x = dots[i].x;
-                    let y = dots[i].y;                 
+                    let y = dots[i].y;
                     let canvasDiv = document.getElementById("canvasDiv")
                     var bodyRect = document.body.getBoundingClientRect()
                     var rect = canvasDiv.getBoundingClientRect();
                     let w = rect.left;// canvasDiv.offsetLeft;
-                    let h =   rect.top;//canvasDiv.offsetTop;
-                    document.getElementById("highlighter" ).style.top = (rect.top +y) + "px";//y +  h +  bodyRect.top) + "px"
-                    document.getElementById("highlighter" ).style.left = (rect.left-16+x) + "px";//x +  w - 12) + "px"
-                    $( "#highlighter" ).show()
+                    let h = rect.top;//canvasDiv.offsetTop;
+                    document.getElementById("highlighter").style.top = (rect.top + y) + "px";//y +  h +  bodyRect.top) + "px"
+                    document.getElementById("highlighter").style.left = (rect.left - 16 + x) + "px";//x +  w - 12) + "px"
+                    $("#highlighter").show()
                 }
             }
         }
     });
 
     $('#loadDataButton').on('click', function () {
-        var table = $('#example').DataTable();
- 
-table
-    .clear()
-    .draw();
+        dataTableReference().clear().draw();
         let sampleSets = [sampleSet1(), sampleSet2()];//,sampleSet3(),sampleSet4(),sampleSet5(),sampleSet6()]
         let canvas = canvasRef();
         sampleSets.forEach((sampleSet, index) => {
@@ -506,7 +441,7 @@ table
         });
         //RefreshCanvas() ;
     });
-    
+
 }
 
 var _canvasRef = null;
@@ -588,9 +523,9 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
         p = ret.p;
         livelyness = ret.livelyness;
         //dots is the array that holds informatio for the tooltip
-        dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip: livelyness + "::" + yarnNotes, yarnID: sample });
         //but before drawing, we have to invert
         outReturnPlotPoint.y = h - outReturnPlotPoint.y;
+        dots.push({ x: p.x, y: p.y, size, rXr: size * size, tip: livelyness + ": " + yarnNotes, yarnID: sample, toPoint: { x: outReturnPlotPoint.x, y: outReturnPlotPoint.y } });
     }
     else {
         p = relativePlotPoint;
@@ -619,11 +554,10 @@ function drawPlotPointAndCalculateLiveliness(h, w, erase = true, el = -1, sl = -
     ctx.fill();
     ctx.beginPath();
 
-    //TODO support lines for relative scale
-    if (relativePlotPoint === null) {
-        drawLeaderLine(ctx, p, outReturnPlotPoint);
-        addTextToCanvasAtPoint(ctx, sample, p, livelyness);
-    }
+    // if (relativePlotPoint === null) {
+    //     drawLeaderLine(ctx, p, outReturnPlotPoint);
+    //     addTextToCanvasAtPoint(ctx, sample, p, livelyness);
+    // }
     let plotPoint = p
     return { plotPoint, livelyness }
 }
@@ -632,14 +566,14 @@ function addTextToCanvasAtPoint(ctx, sample, p, livelyness) {
     ctx.font = "10px Arial";
     ctx.fillStyle = "#000000";
     let percentX = p.x / canvasRef().width
-    if(percentX < .9){
-        ctx.textAlign = "start"; 
+    if (percentX < .9) {
+        ctx.textAlign = "start";
         ctx.fillText(sample, p.x + 8, p.y);
         //ctx.fillText(livelyness, p.x + 11, p.y + 11);
     }
-    else{
-        ctx.textAlign = "end"; 
-        ctx.fillText( sample, p.x - 8, p.y);
+    else {
+        ctx.textAlign = "end";
+        ctx.fillText(sample, p.x - 8, p.y);
         //ctx.fillText( livelyness, p.x - 11, p.y -11);
     }
 }
@@ -703,7 +637,7 @@ function redrawCanvas(canvas) {
         let percentOfWindowWeWantToGoDown = 100 * pixelsToGoDown / window.innerHeight
         let endPercent = percentOfWindowWeWantToGoDown + 14 - 2;
         $('#myCanvas').css('grid-row', '14/' + endPercent.toString());
-        canvas.width = pixelsToInstructions 
+        canvas.width = pixelsToInstructions
         canvas.height = canvas.width
     }
 
@@ -743,33 +677,23 @@ function toggleSwitch(subclass, leftAction, rightAction) {
 }
 var relAbsMode = 'Absolute'
 function drawRel(e) {
-    
+
     relAbsMode = 'Relative'
     dots = [];
     PlotDataTableOnCanvasUsingRelativeScale(e);
+    //drawAbs('Relative');
 }
 
-function drawAbs() {
-    relAbsMode = 'Absolute'
+function drawAbs(mode = 'Absolute') {
+    relAbsMode = mode
     dots = [];
     let erase = true;
-    let t  = dataTableReference().table();
-    for (let i = 0; i < dataTableReference().rows().count(); i++) {
-        let row = dataTableReference().rows().data()[i]
-        let id = row[0];
-        let svgSymbol = row[1];
-        let el = row[2]
-        let rl = row[3]
-        let notes = row[5]
-        let { color, symbol } = getSymbolAndColorFromSvgSymbol(svgSymbol)
-        let { plotPoint, livelyness } = drawPlotPointAndCalculateLiveliness(canvasRef().width, canvasRef().height, erase, el, 10, rl, id, color, symbol, 8, notes);
-        erase = false
-
-        //var temp = row;//t.row(i).data();
-        row[4] = "<span class='lively'>" +  livelyness + "</span>" ;
-        $('#example').dataTable().fnUpdate(row,i, undefined, false);
-    }
-    //
+    let cntr = 0;
+    let sl = 10;
+    dataTableReference().rows().every(function () {
+        ({ cntr, erase } = UpdateLivelinessInTable(this, cntr, null, erase, sl, dataTableReference(), false));
+    })
+    return;
 }
 
 function sqr(x) {
@@ -805,7 +729,7 @@ function getD() {
     let twoWSquaredOverTwo = sqrtTwoWSquared / 2;
     return twoWSquaredOverTwo;
 }
-function drawLine(ctx, x, y, startX = 0, startY = 0, strokeStyle = "#000000", lineWidth=2) {
+function drawLine(ctx, x, y, startX = 0, startY = 0, strokeStyle = "#000000", lineWidth = 2) {
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.lineTo(x, y);
@@ -820,6 +744,7 @@ var previousHighlightedRow = null;
 var previousYarnId = "";
 let previousLine = null;
 function handleMouseMove(e) {
+    $("#highlighter").hide()
     let toPoint = null
     startX = 0;
     startY = 0;
@@ -833,11 +758,15 @@ function handleMouseMove(e) {
     let ctx = getContext2D();
     ctx.font = "12px Arial";
     ctx.fillStyle = "#555555";
-    ctx.clearRect(0,0,50,16)
-    ctx.fillRect(0,0,50,16);
-    ctx.textAlign = "start"; 
+    ctx.clearRect(0, 0, 50, 16)
+    ctx.fillRect(0, 0, 50, 16);
+    ctx.textAlign = "start";
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(mouseX.toString() + "," + mouseY.toString(),2,12,50)
+    let dts2 = distToSegment({ x: mouseX, y: mouseY }, { x: 0, y: 0 }, { x: canvasRef().width, y: canvasRef().height }, { x: 0, y: 0 })
+    if (mouseX < mouseY) {
+        dts2 = -1 * dts2;
+    }
+    ctx.fillText("LI: " + Math.round(dts2), 2, 12, 50)
     var tipCanvas = document.getElementById("tip");
     var tipCtx = tipCanvas.getContext("2d");
     var hit = false;
@@ -848,7 +777,7 @@ function handleMouseMove(e) {
         var dx = mouseX - dot.x;
         var dy = mouseY - dot.y;
         let overTheLine = false
-        let dts = distToSegment({x:mouseX,y:mouseY}, {x:dot.x,y:dot.y},{x:dot.toPoint.x,y:dot.toPoint.y},{x:0,y:0})
+        let dts = distToSegment({ x: mouseX, y: mouseY }, { x: dot.x, y: dot.y }, { x: dot.toPoint.x, y: dot.toPoint.y }, { x: 0, y: 0 })
 
         if (dts < 3 && dts < closestSoFar) {// (dx * dx + dy * dy < dot.rXr)
             closestSoFar = dts;
@@ -862,45 +791,39 @@ function handleMouseMove(e) {
             yarnIDToSelectInTable = dot.yarnID
             toPoint = dot.toPoint;
             hit = true;
-            //break;
         }
     }
     if (!hit) {
         tipCanvas.style.left = "-200px";
-        if(previousLine !== null){
-            //drawLine(getContext2D(), previousLine.x, previousLine.y, previousLine.xx, previousLine.yy,"rgba(255,0,0,5)",2)
-            RefreshCanvas() ;
+        if (previousLine !== null) {
+            RefreshCanvas();
         }
         previousYarnId = ""
     }
-    else{
-        if(yarnIDToSelectInTable !== "" && previousYarnId !== yarnIDToSelectInTable ){
+    else {
+        if (yarnIDToSelectInTable !== "" && previousYarnId !== yarnIDToSelectInTable) {
             let ctx = getContext2D();
-            if(previousYarnId !== ""){
-                RefreshCanvas() ;
+            if (previousYarnId !== "") {
+                RefreshCanvas();
             }
             let td = $('td:contains("' + yarnIDToSelectInTable + '")')
             let tr = td[0].parentElement;
             tr.scrollIntoView(true);
-            if(previousHighlightedRow !== null){
-                previousHighlightedRow.style.backgroundColor = 'unset'
+            if (previousHighlightedRow !== null) {
+                previousHighlightedRow.style = ''
             }
             tr.style.backgroundColor = "yellow"
             previousHighlightedRow = tr;
-            
-            //ctx.save();
             previousYarnId = yarnIDToSelectInTable;
-            drawLine(ctx,startX,startY,toPoint.x,toPoint.y, "yellow",2)
-            previousLine = {x:startX,y:startY,xx:toPoint.x,yy:toPoint.y}
+            drawLine(ctx, startX, startY, toPoint.x, toPoint.y, "yellow", 2)
+            previousLine = { x: startX, y: startY, xx: toPoint.x, yy: toPoint.y }
         }
 
     }
 }
-function debugTest(){
-    alert(dataTableReference().table().rows().count());
-}
+
 function RefreshCanvas() {
-    if (relAbsMode === "absolute") {
+    if (relAbsMode === "Absolute") {
         drawAbs();
     }
     else {
