@@ -62,7 +62,7 @@
                 <div id="whatIsLivelinessDiv">
                     <h3 class="section" style="margin-bottom:0px">What is Liveliness ?</h3>
                     <div class="textIndent">
-                        <div id="sampleEntry" style="visibility:unset;padding-top:10px">
+                        <div id="sampleEntry" style="visibility:unset;padding-top:10px" onclick=debugTest()>
                             Today&lsquo;s handspinners have a handful of useful terms to describe and document their handspun
                             yarns. Twists per inch (TPI), angle of twist (AOT), and wraps per inch (WPI) are now fairly
                             well understood by all levels of handspinners. Although elasticity and resiliency are part
@@ -204,7 +204,8 @@
             Init();
             loadTable();
             $("#loadDataButton").click(); 
-            $('#relAbsToggle').click();} 
+            $('#relAbsToggle').click();
+        } 
     </script> </body> <div class="modal fade" id="exampleModal"
                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
@@ -215,7 +216,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" >
                                     Today&rsquo;s handspinner is acutely aware of integral qualities of fibre which allow
                                     them to describe and ultimately predict the behaviour of their finished yarns.
                                     Terms such as angle of twist (AOT), twists per inch (TPI), and wraps per inch (WPI)
